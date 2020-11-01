@@ -40,10 +40,33 @@ namespace WpfApplication1.src
         public void Connect() { SPort.Open(); }
         public void Disconnect() { SPort.Close(); }
 
-        public void Send(string txt) 
+        public void Send(src.APage page)
         {
+            List<byte> arrOut = new List<byte>();
+
             try
-                { SPort.Write(txt); }
+            {
+                SPort.Write(arrOut.ToArray(), 0, arrOut.Count);
+            }
+            catch
+            { 
+                throw; 
+            }
+        }
+
+        public void Send(string txt)
+        {
+            PageString ps = new PageString(0, 0, 0x001f, 7, txt);
+            List<byte> arrOut = ps.GenSendData();
+            string s = "";
+
+            foreach (var c in arrOut.ToArray())
+                s += (Char)(c);
+
+            try
+                { 
+                    SPort.Write(s); 
+                }
             catch 
                 { throw; }
         }

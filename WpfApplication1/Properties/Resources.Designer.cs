@@ -63,6 +63,16 @@ namespace WpfApplication1.Properties {
         /// <summary>
         ///   Поиск локализованного ресурса типа System.Drawing.Icon, аналогичного (Значок).
         /// </summary>
+        internal static System.Drawing.Icon main_icon {
+            get {
+                object obj = ResourceManager.GetObject("main_icon", resourceCulture);
+                return ((System.Drawing.Icon)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Icon, аналогичного (Значок).
+        /// </summary>
         internal static System.Drawing.Icon NO_icon {
             get {
                 object obj = ResourceManager.GetObject("NO_icon", resourceCulture);
@@ -76,16 +86,6 @@ namespace WpfApplication1.Properties {
         internal static System.Drawing.Icon OK_icon {
             get {
                 object obj = ResourceManager.GetObject("OK_icon", resourceCulture);
-                return ((System.Drawing.Icon)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Поиск локализованного ресурса типа System.Drawing.Icon, аналогичного (Значок).
-        /// </summary>
-        internal static System.Drawing.Icon star_icon {
-            get {
-                object obj = ResourceManager.GetObject("star_icon", resourceCulture);
                 return ((System.Drawing.Icon)(obj));
             }
         }

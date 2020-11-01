@@ -20,6 +20,14 @@ namespace WpfApplication1
     /// </summary>
     public partial class MainWindow : Window
     {
+        //private System.Timers.Timer timer2;
+        private System.Windows.Threading.DispatcherTimer timer;
+
+        private src.DataSender DSender;
+        private src.PageHolder PHolder;
+
+        public window.PageEditorWindow PEWindow;
+
         //
         // Предотвращение запуска второго экземпляра программы
         //
@@ -37,13 +45,11 @@ namespace WpfApplication1
         //
         //
 
-        private System.Timers.Timer timer;
-        private src.DataSender DSender;
-        private src.NIcon notifyIcon = null;
-
         //
         // Логика NotifyIcon
         //
+        private src.NIcon NIcon = null;
+
         public void notifyIcon_Click(object sender, EventArgs e)
         {
             if (((System.Windows.Forms.MouseEventArgs)e).Button == System.Windows.Forms.MouseButtons.Left)
@@ -63,15 +69,12 @@ namespace WpfApplication1
                 WindowState = WindowState.Normal;
             }
         }
-        public void onClose(object sender, EventArgs e) { Close(); }
+        public void onClose(object sender, EventArgs e) { Application.Current.Shutdown(); }
         public void ChangeVisbleWindow() 
         {
-            if (Visibility == Visibility.Hidden)
-            {
-                Visibility = Visibility.Visible;
-            }
-            else
-                Visibility = Visibility.Hidden;
+            Visibility = (Visibility == Visibility.Hidden) ? Visibility.Visible : 
+                                                             Visibility.Hidden;
+
         }
         //
         //
@@ -80,18 +83,21 @@ namespace WpfApplication1
         public MainWindow()
         {
             InitializeComponent();
-            
-            notifyIcon = new src.NIcon(Icon);
-            notifyIcon.Click += notifyIcon_Click;
-            notifyIcon.DoubleClick += notifyIcon_Click;
 
-            notifyIcon.ContextMenuClose += onClose;
-            notifyIcon.ContextMenuConnect += ConnectPortContext_Click;
+            NIcon = new src.NIcon(Icon);
+            NIcon.Click += notifyIcon_Click;
+            NIcon.DoubleClick += notifyIcon_Click;
 
-            timer = new System.Timers.Timer();
+            NIcon.ContextMenuClose += onClose;
+            NIcon.ContextMenuConnect += ConnectPortContext_Click;
 
-            timer.AutoReset = true;
-            timer.Elapsed += TimerElapsed;
+            //timer = new System.Timers.Timer();
+            timer = new System.Windows.Threading.DispatcherTimer();
+
+            //timer.AutoReset = true;
+            //timer.Elapsed += TimerElapsed;
+
+            timer.Tick +=TimerElapsed;
 
             DSender = new src.DataSender();
 
@@ -118,11 +124,7 @@ namespace WpfApplication1
         private void Connect() 
         {
             if (DSender.IsConnect())
-            {
-                DSender.Disconnect();
-                CurPortLabel.Content = "Disconnect";
-                ConnectPortButton.Content = "Подключиться";
-            }
+                { DSender.Disconnect(); }
             else
             {
                 try
@@ -131,15 +133,12 @@ namespace WpfApplication1
                     string portName = comboBoxPort.Text;
                     int baudRate = int.Parse(comboBoxSPD.Text);
 
-                    CurPortLabel.Content = portName + " " + baudRate.ToString();
-
                     if (DSender.BaudRate != baudRate || DSender.PortName != portName)
                     {
                         DSender.SetBaudRate(baudRate);
                         DSender.SetPortName(portName);
                     }
                     DSender.Connect();
-                    ConnectPortButton.Content = "Отключиться";
                 }
                 catch (Exception ex)
                 {
@@ -147,9 +146,36 @@ namespace WpfApplication1
                 }
             }
 
-            notifyIcon.SetIcon(DSender.IsConnect());
-            LockEditPortField(!(DSender.IsConnect()));
+            try
+            { setConnectGuiState(DSender.IsConnect()); }
+            catch (InvalidOperationException ex)
+            { }
+            catch (Exception ex)
+            { MessageBox.Show(ex.Message); }
         }
+        private void setConnectGuiState(bool state)
+        {
+            try
+            {
+                if (state)
+                {
+                    string portName = comboBoxPort.Text;
+                    int baudRate = int.Parse(comboBoxSPD.Text);
+
+                    CurPortLabel.Content = portName + " " + baudRate.ToString();
+                    ConnectPortButton.Content = "Отключиться";
+                }
+                else
+                {
+                    CurPortLabel.Content = "Disconnect";
+                    ConnectPortButton.Content = "Подключиться";
+                }
+                NIcon.SetIcon(DSender.IsConnect());
+                LockEditPortField(!state);
+            }
+            catch { throw; }
+        }
+
         private void LockEditPortField(bool state) 
         {
             comboBoxSPD.IsEnabled    = state;
@@ -163,7 +189,10 @@ namespace WpfApplication1
         {
             if (e.Key == Key.Return && DSender.IsConnect()) 
             {
-                DSender.Send(textBoxSender.Text);
+                for (int i = 0; i < textBoxSender.Text.Length; i++) 
+                {
+                    DSender.Send(textBoxSender.Text[i].ToString());
+                }
                 textBoxSender.Clear();
             }
         }
@@ -171,46 +200,63 @@ namespace WpfApplication1
         // Запуск/Остановка таймера
         private void TimerCheckBox_Click(object sender, RoutedEventArgs e)
         {
-            try
+            if (DSender.IsConnect())
             {
-                timer.Interval = Convert.ToDouble(((ComboBoxItem)TimeCountComboBox.SelectedItem).Content);
-            }
-            catch (Exception ex)
-            {
-                timer.Interval = 60;
-                MessageBox.Show("Ошибка: " + ex.Message + "\nИнтервал установлен в 60 сек.");
-            }
-            timer.Interval *= 1000;
+                try
+                {
+                    timer.Interval = TimeSpan.FromSeconds(Convert.ToDouble(((ComboBoxItem)TimeCountComboBox.SelectedItem).Content));
 
-            if ((bool)TimerCheckBox.IsChecked)
-            {
-                SendCurTime();
-                timer.Start();
+                }
+                catch (Exception ex)
+                {
+                    timer.Interval = TimeSpan.FromSeconds(60);
+                    MessageBox.Show("Ошибка: " + ex.Message + "\nИнтервал установлен в 60 сек.");
+                }
+
+                if ((bool)TimerCheckBox.IsChecked)
+                {
+                    SendCurTime();
+                    timer.Start();
+                }
+                else
+                    timer.Stop();
             }
-            else
-                timer.Stop();
+            else 
+            {
+                MessageBox.Show("Нет подключения к COM порту");
+                TimerCheckBox.IsChecked = false;
+            }
+
         }
 
-        private void TimerElapsed(object sender, System.Timers.ElapsedEventArgs e) 
+        private void TimerElapsed(object sender, EventArgs e) 
         {
             SendCurTime();
+
+            if ((bool)TimerCheckBox.IsChecked) 
+            { timer.Start(); }
         }
 
         private void SendCurTime() 
         {
             try
-            { DSender.Send(System.DateTime.Now.ToShortTimeString()); }
-            catch (Exception ex)
             { 
-                MessageBox.Show(ex.Message);
-                Connect();
+                DSender.Send(System.DateTime.Now.ToShortTimeString());
+                Title = System.DateTime.Now.ToLongTimeString();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Ошибка отправки: " + ex.Message);
+                timer.Stop();
             }
             
         }
 
-        private void Window_Loaded(object sender, RoutedEventArgs e)
+        private void PageSettingButton_Click(object sender, RoutedEventArgs e)
         {
-
+            PEWindow = new window.PageEditorWindow();
+            PEWindow.WindowStartupLocation = System.Windows.WindowStartupLocation.CenterScreen;
+            PEWindow.ShowDialog();
         }
     }
 }

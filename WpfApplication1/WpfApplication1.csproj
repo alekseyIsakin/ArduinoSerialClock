@@ -67,7 +67,7 @@
     <SignManifests>true</SignManifests>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>src\4.ico</ApplicationIcon>
+    <ApplicationIcon>ico\main_icon.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup>
     <StartupObject>WpfApplication1.App</StartupObject>
@@ -101,9 +101,14 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="src\PageHolder.cs" />
+    <Compile Include="src\APage.cs" />
     <Compile Include="src\NIcon.cs" />
     <Compile Include="src\DataSender.cs" />
-    <Page Include="MainWindow.xaml">
+    <Compile Include="window\PageEditorWindow.xaml.cs">
+      <DependentUpon>PageEditorWindow.xaml</DependentUpon>
+    </Compile>
+    <Page Include="window\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -111,10 +116,14 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="MainWindow.xaml.cs">
+    <Compile Include="window\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="window\PageEditorWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -159,13 +168,16 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="src\4.ico" />
+    <Resource Include="ico\main_icon.ico" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="src\NO_icon.ico" />
+    <None Include="ico\NO_icon.ico" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="src\OK_icon.ico" />
+    <None Include="ico\OK_icon.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="data\ListPages.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
