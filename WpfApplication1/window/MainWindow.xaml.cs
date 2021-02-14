@@ -290,6 +290,7 @@ namespace ArdClock
             string send = "";
             
             send += (char)((byte)(TPageEl.ClearCode));
+            send += (char)(0);
             DSender.Send(send);
         }
     }
