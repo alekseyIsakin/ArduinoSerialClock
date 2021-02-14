@@ -17,7 +17,8 @@
         
         <CheckBox Content="Период" Height="16" HorizontalAlignment="Left" Margin="10,201,0,0" Name="TimerCheckBox" Click="TimerCheckBox_Click" VerticalAlignment="Top"/>
         <ComboBox Height="28" Width="60" Margin="10,223,0,0" Name="TimeCountComboBox" VerticalAlignment="Top" HorizontalAlignment="Left" IsEnabled="True" IsEditable="False">
-            <ComboBoxItem IsSelected="True">30</ComboBoxItem>
+            <ComboBoxItem IsSelected="True">10</ComboBoxItem>
+            <ComboBoxItem>30</ComboBoxItem>
             <ComboBoxItem>60</ComboBoxItem>
         </ComboBox>
         <ComboBox Height="28" IsEditable="True" Margin="75,223,0,0" Name="TimeTypeComboBox" IsEnabled="False" VerticalAlignment="Top" HorizontalAlignment="Left" Width="119">
