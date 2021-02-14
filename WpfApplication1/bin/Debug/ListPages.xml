@@ -1,0 +1,47 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Pages>
+  <Page Name="FirstPage" ID="0" >
+    <PageEl TPageEl="65">
+      <Position Pos_x="0" Pos_y="0"/>
+      <Color Value="0xF820"/>
+      <Size Value="5"/>
+      <Data Value=""/>
+    </PageEl>
+    
+    <PageEl TPageEl="65">
+      <Position Pos_x="0" Pos_y="0"/>
+      <Color Value="FFFF"/>
+      <Size Value="5"/>
+      <Data Value=""/>
+    </PageEl>
+    
+    <PageEl TPageEl="65">
+      <Position Pos_x="0" Pos_y="0"/>
+      <Color Value="F800"/>
+      <Size Value="5"/>
+      <Data Value=""/>
+    </PageEl>
+  </Page>
+  <Page Name="Second" ID="1" >
+    <PageEl TPageEl="65">
+      <Position Pos_x="0" Pos_y="0"/>
+      <Color Value="0xF82f"/>
+      <Size Value="5"/>
+      <Data Value=""/>
+    </PageEl>
+    
+    <PageEl TPageEl="65">
+      <Position Pos_x="0" Pos_y="0"/>
+      <Color Value="F0FF"/>
+      <Size Value="5"/>
+      <Data Value=""/>
+    </PageEl>
+    
+    <PageEl TPageEl="65">
+      <Position Pos_x="0" Pos_y="0"/>
+      <Color Value="F801"/>
+      <Size Value="5"/>
+      <Data Value=""/>
+    </PageEl>
+  </Page>
+</Pages>

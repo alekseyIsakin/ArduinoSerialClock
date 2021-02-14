@@ -1,5 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <Pages>
-  <Page Name="test1" ID="0" ></Page>
-  <Page Name="test2" ID="1" ></Page>
+  <Page Name="FirstPage" ID="0" >
+    <PageEl TPageEl="65">
+      <Pos_x>"12"</Pos_x>
+    </PageEl>
+  </Page>
 </Pages>

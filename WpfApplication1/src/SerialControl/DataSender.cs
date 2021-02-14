@@ -4,7 +4,11 @@ using System.Linq;
 using System.Text;
 using System.IO.Ports;
 
-namespace WpfApplication1.src
+using ArdClock.src.HelpingClass;
+using ArdClock.src.APage;
+using ArdClock.src.APage.PageElements;
+
+namespace ArdClock.src.SerialControl
 {
     class DataSender
     {
@@ -30,7 +34,7 @@ namespace WpfApplication1.src
             SPort.StopBits = StopBits.One;
             SPort.DataBits = 8;
             SPort.Handshake = Handshake.None;
-            SPort.RtsEnable = true;          
+            SPort.RtsEnable = true;
         }
         public bool IsConnect() { return SPort.IsOpen; }
 
@@ -40,9 +44,15 @@ namespace WpfApplication1.src
         public void Connect() { SPort.Open(); }
         public void Disconnect() { SPort.Close(); }
 
-        public void Send(src.APage page)
+        public void Send(src.APage.APage page)
         {
             List<byte> arrOut = new List<byte>();
+            arrOut = page.GenSendData();
+
+            //string s1 = "";
+            //foreach (var b in arrOut)
+            //    s1 += b.ToString() + " ";
+            //System.Windows.Forms.MessageBox.Show(s1);
 
             try
             {
@@ -54,18 +64,21 @@ namespace WpfApplication1.src
             }
         }
 
-        public void Send(string txt)
+        public void Send(string txt1)
         {
-            PageString ps = new PageString(0, 0, 0x001f, 7, txt);
-            List<byte> arrOut = ps.GenSendData();
-            string s = "";
+            PageString ps1 = new PageString(0, 0, new AColor(), 7, txt1);
 
-            foreach (var c in arrOut.ToArray())
-                s += (Char)(c);
+            List<byte> arrOut1 = ps1.GenSendData();
+
+            string s1 = "";
+            
+            foreach (var c in arrOut1.ToArray()) 
+                s1 += (Char)(c);
 
             try
-                { 
-                    SPort.Write(s); 
+                {
+                    //System.Windows.Forms.MessageBox.Show(sd + "\n" + s1 + "\n" + s2);
+                    SPort.Write(s1);
                 }
             catch 
                 { throw; }

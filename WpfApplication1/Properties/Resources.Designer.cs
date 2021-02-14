@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace WpfApplication1.Properties {
+namespace ArdClock.Properties {
     using System;
     
     
@@ -22,7 +22,7 @@ namespace WpfApplication1.Properties {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class Resources {
+    public class Resources {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
@@ -36,10 +36,10 @@ namespace WpfApplication1.Properties {
         ///   Возвращает кэшированный экземпляр ResourceManager, использованный этим классом.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Resources.ResourceManager ResourceManager {
+        public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("WpfApplication1.Properties.Resources", typeof(Resources).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("ArdClock.Properties.Resources", typeof(Resources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -51,7 +51,7 @@ namespace WpfApplication1.Properties {
         ///   обращений к ресурсу с помощью этого класса ресурса со строгой типизацией.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Globalization.CultureInfo Culture {
+        public static global::System.Globalization.CultureInfo Culture {
             get {
                 return resourceCulture;
             }
@@ -61,9 +61,35 @@ namespace WpfApplication1.Properties {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на &lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot; ?&gt;
+        ///&lt;nodes&gt;
+        ///  &lt;node title=&quot;Европа&quot;&gt;
+        ///    &lt;node title=&quot;Германия&quot; /&gt;
+        ///    &lt;node title=&quot;Франция&quot; /&gt;
+        ///    &lt;node title=&quot;Великобритания&quot;&gt;
+        ///      &lt;node title=&quot;Англия&quot; /&gt;
+        ///      &lt;node title=&quot;Шотландия&quot; /&gt;
+        ///      &lt;node title=&quot;Уэльс&quot; /&gt;
+        ///      &lt;node title=&quot;Сев. Ирландия&quot; /&gt;
+        ///    &lt;/node&gt;
+        ///  &lt;/node&gt;
+        ///  &lt;node title=&quot;Азия&quot;&gt;
+        ///    &lt;node title=&quot;Китай&quot; /&gt;
+        ///    &lt;node title=&quot;Япония&quot; /&gt;
+        ///    &lt;node title=&quot;Индия&quot; /&gt;
+        ///  &lt;/node&gt;
+        ///&lt;/nodes&gt;.
+        /// </summary>
+        public static string ListPages {
+            get {
+                return ResourceManager.GetString("ListPages", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Поиск локализованного ресурса типа System.Drawing.Icon, аналогичного (Значок).
         /// </summary>
-        internal static System.Drawing.Icon main_icon {
+        public static System.Drawing.Icon main_icon {
             get {
                 object obj = ResourceManager.GetObject("main_icon", resourceCulture);
                 return ((System.Drawing.Icon)(obj));
@@ -73,7 +99,7 @@ namespace WpfApplication1.Properties {
         /// <summary>
         ///   Поиск локализованного ресурса типа System.Drawing.Icon, аналогичного (Значок).
         /// </summary>
-        internal static System.Drawing.Icon NO_icon {
+        public static System.Drawing.Icon NO_icon {
             get {
                 object obj = ResourceManager.GetObject("NO_icon", resourceCulture);
                 return ((System.Drawing.Icon)(obj));
@@ -83,7 +109,7 @@ namespace WpfApplication1.Properties {
         /// <summary>
         ///   Поиск локализованного ресурса типа System.Drawing.Icon, аналогичного (Значок).
         /// </summary>
-        internal static System.Drawing.Icon OK_icon {
+        public static System.Drawing.Icon OK_icon {
             get {
                 object obj = ResourceManager.GetObject("OK_icon", resourceCulture);
                 return ((System.Drawing.Icon)(obj));

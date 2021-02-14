@@ -5,7 +5,7 @@ using System.Data;
 using System.Linq;
 using System.Windows;
 
-namespace WpfApplication1
+namespace ArdClock
 {
     /// <summary>
     /// Логика взаимодействия для App.xaml

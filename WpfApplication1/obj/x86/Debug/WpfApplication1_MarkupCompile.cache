@@ -4,17 +4,17 @@
 winexe
 C#
 .cs
-F:\WpfApplication1\WpfApplication1\obj\x86\Debug\
-WpfApplication1
+C:\Users\Alex\documents\visual studio 2010\Projects\WpfApplication1\WpfApplication1\obj\x86\Debug\
+ArdClock
 none
 false
 DEBUG;TRACE
-F:\WpfApplication1\WpfApplication1\App.xaml
-11151548125
+C:\Users\Alex\documents\visual studio 2010\Projects\WpfApplication1\WpfApplication1\App.xaml
+2-1092014880
 
-71054224941
+18-751029862
 16-1636770576
-MainWindow.xaml;
+window\MainWindow.xaml;window\PageEditorWindow.xaml;
 
 False
 

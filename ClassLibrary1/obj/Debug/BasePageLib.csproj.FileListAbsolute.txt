@@ -1,0 +1,5 @@
+C:\Users\Alex\documents\visual studio 2010\Projects\WpfApplication1\ClassLibrary1\bin\Debug\ClassLibrary1.dll
+C:\Users\Alex\documents\visual studio 2010\Projects\WpfApplication1\ClassLibrary1\bin\Debug\ClassLibrary1.pdb
+C:\Users\Alex\documents\visual studio 2010\Projects\WpfApplication1\ClassLibrary1\obj\Debug\ClassLibrary1.dll
+C:\Users\Alex\documents\visual studio 2010\Projects\WpfApplication1\ClassLibrary1\obj\Debug\ClassLibrary1.pdb
+C:\Users\Alex\documents\visual studio 2010\Projects\WpfApplication1\ClassLibrary1\obj\Debug\BasePageLib.csprojResolveAssemblyReference.cache

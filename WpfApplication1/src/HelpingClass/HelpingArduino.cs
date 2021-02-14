@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace WpfApplication1.src
+namespace ArdClock.src.HelpingClass
 {
-    class PageHolder
+    static class HelpingArduino
     {
     }
 }

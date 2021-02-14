@@ -3,17 +3,20 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace WpfApplication1.src
+namespace ArdClock.src
 {
-    class NIcon
+    class NIcon : IDisposable
     {
         public delegate void NIconHandler(object sender, EventArgs e);
+
+        private bool disposed = false;
+
         public event NIconHandler Click;
         public event NIconHandler DoubleClick;
         public event NIconHandler ContextMenuClose;
         public event NIconHandler ContextMenuConnect;
 
-        private System.Windows.Forms.NotifyIcon notifyIcon = null;
+        public System.Windows.Forms.NotifyIcon notifyIcon {get; private set;}
 
         public NIcon(System.Windows.Media.ImageSource icn) 
         {
@@ -23,7 +26,7 @@ namespace WpfApplication1.src
 
             SetIcon(false);
             notifyIcon.Visible = true;
-            
+
             var cm = new System.Windows.Forms.ContextMenuStrip();
             var itClose = new System.Windows.Forms.ToolStripMenuItem("Close");
             var itConnect = new System.Windows.Forms.ToolStripMenuItem("Connect");
@@ -35,6 +38,12 @@ namespace WpfApplication1.src
 
             notifyIcon.ContextMenuStrip = cm;
         }
+
+        public void Dispose()
+        {
+            notifyIcon.Dispose();
+        }
+
         public void notifyIcon_Click(object sender, EventArgs e)
             { Click(this, e); }
         public void notifyIcon_DoubleClick(object sender, EventArgs e)

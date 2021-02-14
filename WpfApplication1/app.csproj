@@ -8,7 +8,7 @@
     <ProjectGuid>{14DE71E9-C09E-493E-93FB-AB472BF37409}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>WpfApplication1</RootNamespace>
+    <RootNamespace>ArdClock</RootNamespace>
     <AssemblyName>WpfApplication1</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <TargetFrameworkProfile>Client</TargetFrameworkProfile>
@@ -70,7 +70,7 @@
     <ApplicationIcon>ico\main_icon.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup>
-    <StartupObject>WpfApplication1.App</StartupObject>
+    <StartupObject>ArdClock.App</StartupObject>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -101,10 +101,18 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="src\PageHolder.cs" />
-    <Compile Include="src\APage.cs" />
+    <Compile Include="src\APage\PageElements\BaseEl.cs" />
+    <Compile Include="src\APage\PageElements\PageString.cs" />
+    <Compile Include="src\APage\PageElements\PageTimer.cs" />
+    <Compile Include="src\APage\PageHolder.cs" />
+    <Compile Include="src\APage\APage.cs" />
+    <Compile Include="src\UIGenerate\UIAcolorBox.cs" />
+    <Compile Include="src\HelpingClass\AColor.cs" />
+    <Compile Include="src\HelpingClass\AColors.cs" />
+    <Compile Include="src\HelpingClass\HelpingArduino.cs" />
     <Compile Include="src\NIcon.cs" />
-    <Compile Include="src\DataSender.cs" />
+    <Compile Include="src\SerialControl\DataSender.cs" />
+    <Compile Include="src\UIGenerate\UIPageString.cs" />
     <Compile Include="window\PageEditorWindow.xaml.cs">
       <DependentUpon>PageEditorWindow.xaml</DependentUpon>
     </Compile>
@@ -135,9 +143,10 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
     <EmbeddedResource Include="Properties\Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
+      <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="app.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -177,7 +186,12 @@
     <None Include="ico\OK_icon.ico" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="data\ListPages.xml" />
+    <Resource Include="data\ListPages.xml">
+      <SubType>Designer</SubType>
+    </Resource>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="src\XMLLoader\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

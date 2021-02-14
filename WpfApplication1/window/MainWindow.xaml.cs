@@ -13,7 +13,11 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.IO.Ports;
 
-namespace WpfApplication1
+using ArdClock.src.HelpingClass;
+using ArdClock.src.APage.PageElements;
+using ArdClock.src.APage;
+
+namespace ArdClock
 {
     /// <summary>
     /// Логика взаимодействия для MainWindow.xaml
@@ -23,7 +27,7 @@ namespace WpfApplication1
         //private System.Timers.Timer timer2;
         private System.Windows.Threading.DispatcherTimer timer;
 
-        private src.DataSender DSender;
+        private src.SerialControl.DataSender DSender;
         private src.PageHolder PHolder;
 
         public window.PageEditorWindow PEWindow;
@@ -54,10 +58,10 @@ namespace WpfApplication1
         {
             if (((System.Windows.Forms.MouseEventArgs)e).Button == System.Windows.Forms.MouseButtons.Left)
             {
-                ChangeVisbleWindow();
-                
-                Topmost = true;
-                Topmost = false;
+                if (Visibility == Visibility.Hidden)
+                {
+                    Visibility = Visibility.Visible;
+                }
                 Activate();
             }
         }
@@ -76,10 +80,11 @@ namespace WpfApplication1
                                                              Visibility.Hidden;
 
         }
-        //
-        //
-        //
 
+
+        //
+        //
+        //
         public MainWindow()
         {
             InitializeComponent();
@@ -99,7 +104,7 @@ namespace WpfApplication1
 
             timer.Tick +=TimerElapsed;
 
-            DSender = new src.DataSender();
+            DSender = new src.SerialControl.DataSender();
 
             string[] lstSpd = { "300", "1200", "2400", "4800", "9600", "19200", "38400" }; 
             comboBoxSPD.ItemsSource = lstSpd;
@@ -124,12 +129,17 @@ namespace WpfApplication1
         private void Connect() 
         {
             if (DSender.IsConnect())
-                { DSender.Disconnect(); }
+            { 
+                DSender.Disconnect();
+                timer.Stop();
+            }
             else
             {
                 try
                 {
                     //string portName = comboBoxPort.SelectedValue.ToString();
+                    //SPort.ErrorReceived
+                    
                     string portName = comboBoxPort.Text;
                     int baudRate = int.Parse(comboBoxSPD.Text);
 
@@ -137,8 +147,15 @@ namespace WpfApplication1
                     {
                         DSender.SetBaudRate(baudRate);
                         DSender.SetPortName(portName);
+                        //DSender = new src.SerialControl.DataSender(portName, baudRate);
                     }
                     DSender.Connect();
+
+                    if ((bool)TimerCheckBox.IsChecked)
+                    {
+                        timer.Start();
+                        TimerElapsed(timer, null);
+                    }
                 }
                 catch (Exception ex)
                 {
@@ -181,7 +198,7 @@ namespace WpfApplication1
             comboBoxSPD.IsEnabled    = state;
             comboBoxPort.IsEnabled   = state;
             textBoxSender.IsEnabled = !state;
-            TimerCheckBox.IsEnabled = !state;
+            //TimerCheckBox.IsEnabled = !state;
         }
 
         // Отправка сообщения через клавишу Enter
@@ -191,7 +208,7 @@ namespace WpfApplication1
             {
                 for (int i = 0; i < textBoxSender.Text.Length; i++) 
                 {
-                    DSender.Send(textBoxSender.Text[i].ToString());
+                    //DSender.Send(textBoxSender.Text[i].ToString());
                 }
                 textBoxSender.Clear();
             }
@@ -204,8 +221,7 @@ namespace WpfApplication1
             {
                 try
                 {
-                    timer.Interval = TimeSpan.FromSeconds(Convert.ToDouble(((ComboBoxItem)TimeCountComboBox.SelectedItem).Content));
-
+                    timer.Interval = TimeSpan.FromSeconds(Convert.ToInt32(((ComboBoxItem)TimeCountComboBox.SelectedItem).Content));
                 }
                 catch (Exception ex)
                 {
@@ -221,12 +237,6 @@ namespace WpfApplication1
                 else
                     timer.Stop();
             }
-            else 
-            {
-                MessageBox.Show("Нет подключения к COM порту");
-                TimerCheckBox.IsChecked = false;
-            }
-
         }
 
         private void TimerElapsed(object sender, EventArgs e) 
@@ -240,8 +250,19 @@ namespace WpfApplication1
         private void SendCurTime() 
         {
             try
-            { 
-                DSender.Send(System.DateTime.Now.ToShortTimeString());
+            {
+                List<PageEl> page_el = new List<PageEl>();
+
+                page_el.Add(new src.APage.PageElements.PageTime(0, 0, AColors.WHITE, 7));
+
+                src.APage.APage page = new src.APage.APage(
+                    "name",
+                    0,
+                    page_el
+                    );
+
+                DSender.Send(page);
+
                 Title = System.DateTime.Now.ToLongTimeString();
             }
             catch (Exception ex)
@@ -257,6 +278,19 @@ namespace WpfApplication1
             PEWindow = new window.PageEditorWindow();
             PEWindow.WindowStartupLocation = System.Windows.WindowStartupLocation.CenterScreen;
             PEWindow.ShowDialog();
+        }
+
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            NIcon.Dispose();
+        }
+
+        private void Button_sendClear_Click(object sender, RoutedEventArgs e)
+        {
+            string send = "";
+            
+            send += (char)((byte)(TPageEl.ClearCode));
+            DSender.Send(send);
         }
     }
 }

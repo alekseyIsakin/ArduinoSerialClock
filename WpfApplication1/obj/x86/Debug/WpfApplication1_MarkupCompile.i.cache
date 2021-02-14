@@ -5,16 +5,16 @@ winexe
 C#
 .cs
 C:\Users\Alex\documents\visual studio 2010\Projects\WpfApplication1\WpfApplication1\obj\x86\Debug\
-WpfApplication1
+ArdClock
 none
 false
 DEBUG;TRACE
 C:\Users\Alex\documents\visual studio 2010\Projects\WpfApplication1\WpfApplication1\App.xaml
-11151548125
+2-1092014880
 
-8-1140174933
+191349537560
 16-1636770576
-MainWindow.xaml;
+window\MainWindow.xaml;window\PageEditorWindow.xaml;
 
 False
 
