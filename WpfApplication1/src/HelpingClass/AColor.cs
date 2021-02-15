@@ -45,20 +45,24 @@ namespace ArdClock.src.HelpingClass
         {
             byte R, G, B;
             
+            //    block1    block2 
+            // 0b_1111_1111_1111_1111
+            //    rrrr rggg gggb bbbb
+            
             byte d1 = 248;   // 0b_1111_1000 5bit for Red 
             byte d2 = 7;     // 0b_0000_0111 3bit for Green
             byte d3 = 224;   // 0b_1110_0000 3bit for Green
             byte d4 = 31;    // 0b_0001_1111 5bit for Blue
 
             R = (byte)((block1 & d1) >> 3);
-            R *= 8;
+            R *= 8; // 5+3 = 8bit
 
-            G = (byte)((block1 & d2) << 2);
-            G += (byte)((block2 & d3));
-            G *= 4;
+            G = (byte)((block1 & d2) << 3);
+            G += (byte)((block2 & d3) >> 5);
+            G *= 4; //6+2 = 8bit
 
             B = (byte)(block2 & d4);
-            B *= 4;
+            B *= 8; // 5+3 = 8bit
 
             //System.Windows.MessageBox.Show(String.Format("{0} {1} {2}", R, G, B));
             return Color.FromRgb(R,G,B);

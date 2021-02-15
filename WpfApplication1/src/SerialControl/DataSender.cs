@@ -5,8 +5,8 @@ using System.Text;
 using System.IO.Ports;
 
 using ArdClock.src.HelpingClass;
-using ArdClock.src.APage;
-using ArdClock.src.APage.PageElements;
+using ArdClock.src.ArdPage;
+using ArdClock.src.ArdPage.PageElements;
 
 namespace ArdClock.src.SerialControl
 {
@@ -20,6 +20,7 @@ namespace ArdClock.src.SerialControl
  
         public DataSender(string portName, int baudRate) 
         {
+
             SPort = new SerialPort();
 
             this.PortName = portName;
@@ -44,26 +45,28 @@ namespace ArdClock.src.SerialControl
         public void Connect() { SPort.Open(); }
         public void Disconnect() { SPort.Close(); }
 
-        public void Send(src.APage.APage page)
+        public void Send(src.ArdPage.APage page)
         {
             List<byte> arrOut = new List<byte>();
             arrOut = page.GenSendData();
 
-            //string s1 = "";
-            //foreach (var b in arrOut)
-            //    s1 += b.ToString() + " ";
-            //System.Windows.Forms.MessageBox.Show(s1);
+            if (arrOut.Count == 0)
+                return;
 
             try
             {
                 SPort.Write(arrOut.ToArray(), 0, arrOut.Count);
             }
             catch
-            { 
-                throw; 
+            {
+                throw;
             }
         }
 
+        public void SetReadyToSend() 
+        {
+        
+        }
         public void Send(string txt1)
         {
             PageString ps1 = new PageString(0, 0, new AColor(), 7, txt1);
@@ -82,6 +85,20 @@ namespace ArdClock.src.SerialControl
                 }
             catch 
                 { throw; }
+        }
+
+        public void SendClearCode() 
+        {
+            string send = "";
+
+            send += (char)((byte)(TPageEl.ClearCode));
+            send += (char)(0);
+            try 
+            {
+                SPort.Write(send);
+            }
+            catch
+            { throw; }
         }
     }
 }

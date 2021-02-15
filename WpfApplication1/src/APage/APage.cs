@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using ArdClock.src.HelpingClass;
-using ArdClock.src.APage.PageElements;
+using ArdClock.src.ArdPage.PageElements;
 
-namespace ArdClock.src.APage
+namespace ArdClock.src.ArdPage
 {
     /*
      Объявление всех классов, которые будут хранить
@@ -65,6 +65,12 @@ namespace ArdClock.src.APage
         public List<byte> GenSendData()
         {
             List<byte> out_dt = new List<byte>();
+
+            if (Elements == null)
+            {
+                System.Windows.MessageBox.Show("Пустая страница");
+                return out_dt;
+            }
             foreach (var e in Elements)
             {
                 out_dt.AddRange(e.GenSendData());
@@ -81,14 +87,7 @@ namespace ArdClock.src.APage
     {
         BaseEl,
         String = 65,
+        Time,
         ClearCode = 127
     }
-
-    //
-    // Строка 
-    //
-    
-    //
-    // Вспомогательные классы
-    //
 }

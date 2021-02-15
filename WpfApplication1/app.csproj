@@ -103,7 +103,7 @@
     </Compile>
     <Compile Include="src\APage\PageElements\BaseEl.cs" />
     <Compile Include="src\APage\PageElements\PageString.cs" />
-    <Compile Include="src\APage\PageElements\PageTimer.cs" />
+    <Compile Include="src\APage\PageElements\PageTime.cs" />
     <Compile Include="src\APage\PageHolder.cs" />
     <Compile Include="src\APage\APage.cs" />
     <Compile Include="src\UIGenerate\UIAcolorBox.cs" />
@@ -112,7 +112,12 @@
     <Compile Include="src\HelpingClass\HelpingArduino.cs" />
     <Compile Include="src\NIcon.cs" />
     <Compile Include="src\SerialControl\DataSender.cs" />
+    <Compile Include="src\UIGenerate\UIGenerateHelping.cs" />
     <Compile Include="src\UIGenerate\UIPageString.cs" />
+    <Compile Include="src\UIGenerate\UIPageTime.cs" />
+    <Compile Include="src\XMLLoader\Loader.cs" />
+    <Compile Include="src\XMLLoader\Writer.cs" />
+    <Compile Include="src\XMLLoader\XMLDefines.cs" />
     <Compile Include="window\PageEditorWindow.xaml.cs">
       <DependentUpon>PageEditorWindow.xaml</DependentUpon>
     </Compile>
@@ -190,9 +195,7 @@
       <SubType>Designer</SubType>
     </Resource>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="src\XMLLoader\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

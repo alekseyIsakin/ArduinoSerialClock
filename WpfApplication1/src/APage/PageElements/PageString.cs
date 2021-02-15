@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using ArdClock.src.HelpingClass;
 
-namespace ArdClock.src.APage.PageElements
+namespace ArdClock.src.ArdPage.PageElements
 {
     class PageString : PageEl
     {
@@ -43,16 +43,16 @@ namespace ArdClock.src.APage.PageElements
 
             lout.Add((byte)TPageEl.String);
 
-            lout.Add((byte)StrPageEl.Position);
-            lout.AddRange(GetPos());
+            //lout.Add((byte)StrPageEl.Position);
+            lout.AddRange(GeSendtPos());
 
-            lout.Add((byte)StrPageEl.Color);
+            //lout.Add((byte)StrPageEl.Color);
             lout.AddRange(GetByteColor());
 
-            lout.Add((byte)StrPageEl.Size);
+            //lout.Add((byte)StrPageEl.Size);
             lout.Add(Size);
 
-            lout.Add((byte)StrPageEl.Data);
+            //lout.Add((byte)StrPageEl.Data);
 
             foreach (Char chr in Data)
             {
