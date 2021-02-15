@@ -11,13 +11,13 @@ using ArdClock.src.ArdPage.PageElements;
 
 namespace ArdClock.src.UIGenerate
 {
-    class UIPageString
+    class UIPageTime
     {
         public DockPanel UIDockPanel;
-        public UIPageString(PageString ps) 
+        public UIPageTime(PageTime pt) 
         {
             UIDockPanel = new DockPanel();
-            UIDockPanel.Height = 60;
+            UIDockPanel.Height = 45;
             UIDockPanel.LastChildFill = false;
 
             // Интерфейс для настройки позиции
@@ -26,8 +26,10 @@ namespace ArdClock.src.UIGenerate
             TextBox tbY = new TextBox();
 
             lbl_pos.Content = "Позиция";
-            tbX.Text = ps.X.ToString();
-            tbY.Text = ps.Y.ToString();
+            lbl_pos.VerticalAlignment = VerticalAlignment.Center;
+
+            tbX.Text = pt.X.ToString();
+            tbY.Text = pt.Y.ToString();
 
             tbX.MaxLength = 3;
             tbY.MaxLength = 3;
@@ -48,9 +50,11 @@ namespace ArdClock.src.UIGenerate
             TextBox tbC = new TextBox();
             Rectangle rectC = new Rectangle();
 
-            string clr = ps.TextColor.ToHex();
+            string clr = pt.TextColor.ToHex();
 
             lbl_clr.Content = "Цвет";
+            lbl_clr.VerticalAlignment = VerticalAlignment.Center;
+
             tbC.Text = clr;
 
             tbC.Width = 65;
@@ -59,7 +63,7 @@ namespace ArdClock.src.UIGenerate
             tbC.MaxLength = 6;
 
             rectC.Fill = new SolidColorBrush(
-                ps.TextColor.GetColor()
+                pt.TextColor.GetColor()
                 );
             rectC.Stroke = Brushes.Black;
             rectC.StrokeThickness = 3;
@@ -73,23 +77,31 @@ namespace ArdClock.src.UIGenerate
             TextBox tbS = new TextBox();
 
             lbl_size.Content = "Размер";
-            tbS.Text = ps.Size.ToString();
+            lbl_size.VerticalAlignment = VerticalAlignment.Center;
+
+            tbS.Text = pt.Size.ToString();
 
             tbS.Width = 25;
             tbS.Height = 23;
             //
 
             // Текст
-            TextBox tbT = new TextBox();
+            CheckBox cbSecond = new CheckBox();
+            CheckBox cbMinut = new CheckBox();
+            CheckBox cbHour = new CheckBox();
 
-            tbT.Height = 23;
-            tbT.Text = ps.Data;
+            cbSecond.IsChecked = pt.Second;
+            cbMinut.IsChecked = pt.Minut;
+            cbHour.IsChecked = pt.Hour;
 
-            DockPanel.SetDock(tbT, Dock.Bottom);
+            cbSecond.Content = "сек";
+            cbMinut.Content = "мин";
+            cbHour.Content = "час";
+
+            DockPanel.SetDock(cbSecond, Dock.Top);
+            DockPanel.SetDock(cbMinut, Dock.Top);
+            DockPanel.SetDock(cbHour, Dock.Top);
             //
-
-
-            UIDockPanel.Children.Add(tbT);
 
             UIDockPanel.Children.Add(lbl_pos);
             UIDockPanel.Children.Add(tbX);
@@ -109,6 +121,14 @@ namespace ArdClock.src.UIGenerate
 
             UIDockPanel.Children.Add(lbl_size);
             UIDockPanel.Children.Add(tbS);
+
+            UIDockPanel.Children.Add(
+                UIGenerateHelping.NewGridSplitter(10, Brushes.White));
+
+            UIDockPanel.Children.Add(cbSecond);
+            UIDockPanel.Children.Add(cbMinut);
+            UIDockPanel.Children.Add(cbHour);
+
         }
 
     }

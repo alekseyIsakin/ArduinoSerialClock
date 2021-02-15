@@ -9,8 +9,6 @@ namespace ArdClock.src
     {
         public delegate void NIconHandler(object sender, EventArgs e);
 
-        private bool disposed = false;
-
         public event NIconHandler Click;
         public event NIconHandler DoubleClick;
         public event NIconHandler ContextMenuClose;

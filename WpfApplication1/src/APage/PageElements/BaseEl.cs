@@ -3,12 +3,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace ArdClock.src.APage.PageElements
+namespace ArdClock.src.ArdPage.PageElements
 {
     public class PageEl
     {
-        public byte x;
-        public byte y;
+        public byte X { get; private set; }
+        public byte Y { get; private set; }
+
+        public PageEl() 
+        {
+            X = 0; Y = 0;
+        }
 
         public PageEl(byte x, byte y)
         {
@@ -17,15 +22,15 @@ namespace ArdClock.src.APage.PageElements
 
         public void SetPos(byte x, byte y)
         {
-            this.x = (byte)(x / 2);
-            this.y = (byte)(y / 2);
+            this.X = x;
+            this.Y = y;
         }
 
-        public List<byte> GetPos()
+        public List<byte> GeSendtPos()
         {
             List<byte> lout = new List<byte>();
-            lout.Add(x);
-            lout.Add(y);
+            lout.Add((byte)(X / 2));
+            lout.Add((byte)(Y / 2));
             return lout;
         }
 

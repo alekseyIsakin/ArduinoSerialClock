@@ -14,8 +14,8 @@ using System.Windows.Shapes;
 using System.IO.Ports;
 
 using ArdClock.src.HelpingClass;
-using ArdClock.src.APage.PageElements;
-using ArdClock.src.APage;
+using ArdClock.src.ArdPage.PageElements;
+using ArdClock.src.ArdPage;
 
 namespace ArdClock
 {
@@ -28,7 +28,7 @@ namespace ArdClock
         private System.Windows.Threading.DispatcherTimer timer;
 
         private src.SerialControl.DataSender DSender;
-        private src.PageHolder PHolder;
+        private src.ArdPage.APage SenderPage;
 
         public window.PageEditorWindow PEWindow;
 
@@ -96,12 +96,7 @@ namespace ArdClock
             NIcon.ContextMenuClose += onClose;
             NIcon.ContextMenuConnect += ConnectPortContext_Click;
 
-            //timer = new System.Timers.Timer();
             timer = new System.Windows.Threading.DispatcherTimer();
-
-            //timer.AutoReset = true;
-            //timer.Elapsed += TimerElapsed;
-
             timer.Tick +=TimerElapsed;
 
             DSender = new src.SerialControl.DataSender();
@@ -119,6 +114,19 @@ namespace ArdClock
             {
                 MessageBox.Show("Нет доступных портов");
             }
+
+            PEWindow = new window.PageEditorWindow();
+
+            if (PEWindow.pageList.Count >= 1)
+                SenderPage = PEWindow.pageList[0];
+            else
+                SenderPage = new APage();
+            PEWindow.Close();
+
+            List<APage> lp = new List<APage>();
+            lp.Add(SenderPage);
+
+            src.XMLLoader.Writer.WritePageListToXML(lp, System.Environment.CurrentDirectory + "\\WriteListPages.xml");
         }
 
         private void ConnectPort_Click(object sender, RoutedEventArgs e)
@@ -131,15 +139,12 @@ namespace ArdClock
             if (DSender.IsConnect())
             { 
                 DSender.Disconnect();
-                timer.Stop();
+                StopTimer();
             }
             else
             {
                 try
                 {
-                    //string portName = comboBoxPort.SelectedValue.ToString();
-                    //SPort.ErrorReceived
-                    
                     string portName = comboBoxPort.Text;
                     int baudRate = int.Parse(comboBoxSPD.Text);
 
@@ -147,7 +152,6 @@ namespace ArdClock
                     {
                         DSender.SetBaudRate(baudRate);
                         DSender.SetPortName(portName);
-                        //DSender = new src.SerialControl.DataSender(portName, baudRate);
                     }
                     DSender.Connect();
 
@@ -165,8 +169,6 @@ namespace ArdClock
 
             try
             { setConnectGuiState(DSender.IsConnect()); }
-            catch (InvalidOperationException ex)
-            { }
             catch (Exception ex)
             { MessageBox.Show(ex.Message); }
         }
@@ -219,65 +221,64 @@ namespace ArdClock
         {
             if (DSender.IsConnect())
             {
-                try
-                {
-                    timer.Interval = TimeSpan.FromSeconds(Convert.ToInt32(((ComboBoxItem)TimeCountComboBox.SelectedItem).Content));
-                }
-                catch (Exception ex)
-                {
-                    timer.Interval = TimeSpan.FromSeconds(60);
-                    MessageBox.Show("Ошибка: " + ex.Message + "\nИнтервал установлен в 60 сек.");
-                }
+                timer.Interval = TimeSpan.FromSeconds(
+                    Convert.ToInt32(((ComboBoxItem)TimeCountComboBox.SelectedItem).Content));
 
                 if ((bool)TimerCheckBox.IsChecked)
                 {
-                    SendCurTime();
+                    SendCurPage();
                     timer.Start();
                 }
                 else
-                    timer.Stop();
+                    StopTimer();
             }
         }
 
         private void TimerElapsed(object sender, EventArgs e) 
         {
-            SendCurTime();
+            SendCurPage();
 
             if ((bool)TimerCheckBox.IsChecked) 
             { timer.Start(); }
         }
 
-        private void SendCurTime() 
+        private void StopTimer() 
+        {
+            TimerCheckBox.IsChecked = false;
+            timer.Stop();
+        }
+
+        private void SendCurPage() 
         {
             try
             {
-                List<PageEl> page_el = new List<PageEl>();
-
-                page_el.Add(new src.APage.PageElements.PageTime(0, 0, AColors.WHITE, 7));
-
-                src.APage.APage page = new src.APage.APage(
-                    "name",
-                    0,
-                    page_el
-                    );
-
-                DSender.Send(page);
-
+                DSender.Send(SenderPage);
                 Title = System.DateTime.Now.ToLongTimeString();
             }
             catch (Exception ex)
             {
+                StopTimer();
+
                 MessageBox.Show("Ошибка отправки: " + ex.Message);
-                timer.Stop();
             }
             
         }
 
+
+        // events
+        //
         private void PageSettingButton_Click(object sender, RoutedEventArgs e)
         {
             PEWindow = new window.PageEditorWindow();
             PEWindow.WindowStartupLocation = System.Windows.WindowStartupLocation.CenterScreen;
+            PEWindow.button1.Click += button1_Click;
             PEWindow.ShowDialog();
+        }
+
+        private void button1_Click(object sender, RoutedEventArgs e)
+        {
+            SenderPage = PEWindow.CurPage;
+            PEWindow.Close();
         }
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
@@ -287,11 +288,19 @@ namespace ArdClock
 
         private void Button_sendClear_Click(object sender, RoutedEventArgs e)
         {
-            string send = "";
-            
-            send += (char)((byte)(TPageEl.ClearCode));
-            send += (char)(0);
-            DSender.Send(send);
+            DSender.SendClearCode();
+        }
+
+        private void Button_singleSend_Click_1(object sender, RoutedEventArgs ev)
+        {
+            try
+            {
+                DSender.Send(SenderPage);
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show("Ошибка одиночной отправки\n" + e.Message);
+            }
         }
     }
 }
