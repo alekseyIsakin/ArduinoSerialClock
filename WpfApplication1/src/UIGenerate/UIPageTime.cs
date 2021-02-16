@@ -11,9 +11,8 @@ using ArdClock.src.ArdPage.PageElements;
 
 namespace ArdClock.src.UIGenerate
 {
-    class UIPageTime
+    class UIPageTime : UIBaseEl
     {
-        public DockPanel UIDockPanel;
         public UIPageTime(PageTime pt) 
         {
             UIDockPanel = new DockPanel();
@@ -130,6 +129,11 @@ namespace ArdClock.src.UIGenerate
             UIDockPanel.Children.Add(cbHour);
 
         }
+        public override PageEl CompileElement() 
+        {
+            PageEl p_out = new PageEl();
 
+            return p_out;
+        }
     }
 }

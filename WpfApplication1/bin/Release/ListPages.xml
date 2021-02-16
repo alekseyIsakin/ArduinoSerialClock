@@ -1,17 +1,11 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <Pages>
-  <Page Name="FirstPage" ID="0" >
+  <Page Name="FirstPage" ID="0">
     <PageEl TPageEl="66">
-      <Position Pos_x="0" Pos_y="0"/>
-      <Color Value="0x07E0"/>
-      <Size Value="5"/>
+      <Position Pos_x="0" Pos_y="0" />
+      <Color Value="0x07FF" />
+      <Size Value="4" />
       <Data Sec="0" Minut="1" Hour="1"/>
-    </PageEl>
-    <PageEl TPageEl="65">
-      <Position Pos_x="76" Pos_y="108"/>
-      <Color Value="0x371F"/>
-      <Size Value="5"/>
-      <Data Value="v^v"/>
     </PageEl>
   </Page>
 </Pages>

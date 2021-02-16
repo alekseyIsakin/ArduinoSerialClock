@@ -123,10 +123,10 @@ namespace ArdClock
                 SenderPage = new APage();
             PEWindow.Close();
 
-            List<APage> lp = new List<APage>();
-            lp.Add(SenderPage);
+            //List<APage> lp = new List<APage>();
+            //lp.Add(SenderPage);
 
-            src.XMLLoader.Writer.WritePageListToXML(lp, System.Environment.CurrentDirectory + "\\WriteListPages.xml");
+            //src.XMLLoader.Writer.WritePageListToXML(lp, System.Environment.CurrentDirectory + "\\WriteListPages.xml");
         }
 
         private void ConnectPort_Click(object sender, RoutedEventArgs e)
@@ -271,13 +271,13 @@ namespace ArdClock
         {
             PEWindow = new window.PageEditorWindow();
             PEWindow.WindowStartupLocation = System.Windows.WindowStartupLocation.CenterScreen;
-            PEWindow.button1.Click += button1_Click;
+            PEWindow.button_Activate.Click += button1_Click;
             PEWindow.ShowDialog();
         }
 
         private void button1_Click(object sender, RoutedEventArgs e)
         {
-            SenderPage = PEWindow.CurPage;
+            SenderPage = PEWindow.curPage;
             PEWindow.Close();
         }
 

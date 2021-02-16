@@ -6,14 +6,14 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Shapes;
+
 using ArdClock.src.ArdPage;
 using ArdClock.src.ArdPage.PageElements;
 
 namespace ArdClock.src.UIGenerate
 {
-    class UIPageString
+    class UIPageString : UIBaseEl
     {
-        public DockPanel UIDockPanel;
         public UIPageString(PageString ps) 
         {
             UIDockPanel = new DockPanel();
@@ -90,12 +90,16 @@ namespace ArdClock.src.UIGenerate
 
 
             UIDockPanel.Children.Add(tbT);
+            tbT.Uid = "tbT";
 
             UIDockPanel.Children.Add(lbl_pos);
             UIDockPanel.Children.Add(tbX);
             UIDockPanel.Children.Add(
                 UIGenerateHelping.NewGridSplitter(10, Brushes.White));
             UIDockPanel.Children.Add(tbY);
+
+            tbX.Uid = "tbX";
+            tbY.Uid = "tbY";
 
             UIDockPanel.Children.Add(
                 UIGenerateHelping.NewGridSplitter(10, Brushes.White));
@@ -104,12 +108,42 @@ namespace ArdClock.src.UIGenerate
             UIDockPanel.Children.Add(tbC);
             UIDockPanel.Children.Add(rectC);
 
+            tbC.Uid = "tbC";
+
             UIDockPanel.Children.Add(
                 UIGenerateHelping.NewGridSplitter(10, Brushes.White));
 
             UIDockPanel.Children.Add(lbl_size);
             UIDockPanel.Children.Add(tbS);
+
+            tbS.Uid = "tbS";
         }
 
+        public override PageEl CompileElement()
+        {
+            string dt = "";
+            string clr = "";
+            byte px = 0;
+            byte py = 0;
+            byte sz = 0;
+
+            foreach (UIElement ch in UIDockPanel.Children) 
+            {
+                switch (ch.Uid) 
+                {
+                    case "tbT":
+                        dt = ((TextBox)ch).Text;
+                        break;
+                }
+            }
+
+            PageString p_out = new PageString(
+                0,0, 
+                HelpingClass.AColors.CYAN, 
+                4,
+                dt);
+
+            return p_out;
+        }
     }
 }

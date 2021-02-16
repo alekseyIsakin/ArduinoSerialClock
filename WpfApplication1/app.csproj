@@ -104,7 +104,6 @@
     <Compile Include="src\APage\PageElements\BaseEl.cs" />
     <Compile Include="src\APage\PageElements\PageString.cs" />
     <Compile Include="src\APage\PageElements\PageTime.cs" />
-    <Compile Include="src\APage\PageHolder.cs" />
     <Compile Include="src\APage\APage.cs" />
     <Compile Include="src\UIGenerate\UIAcolorBox.cs" />
     <Compile Include="src\HelpingClass\AColor.cs" />
@@ -112,6 +111,7 @@
     <Compile Include="src\HelpingClass\HelpingArduino.cs" />
     <Compile Include="src\NIcon.cs" />
     <Compile Include="src\SerialControl\DataSender.cs" />
+    <Compile Include="src\UIGenerate\UIBaseEl.cs" />
     <Compile Include="src\UIGenerate\UIGenerateHelping.cs" />
     <Compile Include="src\UIGenerate\UIPageString.cs" />
     <Compile Include="src\UIGenerate\UIPageTime.cs" />

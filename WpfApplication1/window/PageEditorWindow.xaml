@@ -5,8 +5,9 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         Title="Window1" Height="300" Width="639" DataContext="{Binding}">
     <Grid>
-        <ListBox Height="208" HorizontalAlignment="Left" Margin="12,12,0,0" Name="list_page_name" VerticalAlignment="Top" Width="175" SelectionChanged="listBox1_SelectionChanged"/>
+        <ListBox Height="178" HorizontalAlignment="Left" Margin="12,12,0,0" Name="list_page_name" VerticalAlignment="Top" Width="175" SelectionChanged="listBox1_SelectionChanged"/>
         <StackPanel Height="237" HorizontalAlignment="Left" Margin="193,12,0,0" Name="stackPanel1" VerticalAlignment="Top" Width="412" Orientation="Vertical"></StackPanel>
-        <Button Content="Активировать" Height="23" HorizontalAlignment="Left" Margin="12,226,0,0" Name="button1" VerticalAlignment="Top" Width="175"/>
+        <Button Content="Сохранить" Height="23" HorizontalAlignment="Left" Margin="12,197,0,0" Name="button_Save" VerticalAlignment="Top" Width="175" Click="button_Save_Click" />
+        <Button Content="Активировать" Height="23" HorizontalAlignment="Left" Margin="12,226,0,0" Name="button_Activate" VerticalAlignment="Top" Width="175"/>
     </Grid>
 </Window>

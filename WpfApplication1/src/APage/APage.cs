@@ -58,9 +58,7 @@ namespace ArdClock.src.ArdPage
         }
         
         public override string ToString() 
-        {
-            return string.Format("Page {0}", Name);
-        }
+        { return string.Format("Page {0}", Name); }
 
         public List<byte> GenSendData()
         {

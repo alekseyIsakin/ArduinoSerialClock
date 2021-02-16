@@ -75,7 +75,7 @@ namespace ArdClock.src.XMLLoader
                 (XMLDefines.XMLTag.PageEl).ToString());
 
             var attrTypeEl = xdd.CreateAttribute(
-                XMLDefines.XMLStringAttr.TyprEl.ToString());
+                XMLDefines.XMLStringAttr.TypeEl.ToString());
 
             attrTypeEl.Value = ((int)ps.GetTypeEl()).ToString();
 
@@ -147,7 +147,7 @@ namespace ArdClock.src.XMLLoader
                 (XMLDefines.XMLTag.PageEl).ToString());
 
             var attrTypeEl = xdd.CreateAttribute(
-                XMLDefines.XMLTimeAttr.TyprEl.ToString());
+                XMLDefines.XMLTimeAttr.TypeEl.ToString());
 
             attrTypeEl.Value = ((int)pt.GetTypeEl()).ToString();
 
