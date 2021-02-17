@@ -12,6 +12,12 @@ namespace ArdClock.src.SerialControl
 {
     class DataSender
     {
+        const int TIME_WAIT = 2; // время на обработку отправки
+        
+        System.Windows.Threading.DispatcherTimer timer;
+
+        bool ReadyToSend = false;
+
         public int BaudRate{ get; private set; }
         public string PortName{ get; private set; }
         private SerialPort SPort;
@@ -20,7 +26,9 @@ namespace ArdClock.src.SerialControl
  
         public DataSender(string portName, int baudRate) 
         {
-
+            timer = new System.Windows.Threading.DispatcherTimer();
+            timer.Interval = TimeSpan.FromSeconds(TIME_WAIT);
+            timer.Tick += TimerElapsed;
             SPort = new SerialPort();
 
             this.PortName = portName;
@@ -36,6 +44,8 @@ namespace ArdClock.src.SerialControl
             SPort.DataBits = 8;
             SPort.Handshake = Handshake.None;
             SPort.RtsEnable = true;
+            
+            ReadyToSend = true;
         }
         public bool IsConnect() { return SPort.IsOpen; }
 
@@ -53,52 +63,40 @@ namespace ArdClock.src.SerialControl
             if (arrOut.Count == 0)
                 return;
 
-            try
-            {
-                SPort.Write(arrOut.ToArray(), 0, arrOut.Count);
-            }
-            catch
-            {
-                throw;
-            }
+            TrySend(arrOut);
         }
-
-        public void SetReadyToSend() 
-        {
-        
-        }
-        public void Send(string txt1)
-        {
-            PageString ps1 = new PageString(0, 0, new AColor(), 7, txt1);
-
-            List<byte> arrOut1 = ps1.GenSendData();
-
-            string s1 = "";
-            
-            foreach (var c in arrOut1.ToArray()) 
-                s1 += (Char)(c);
-
-            try
-                {
-                    //System.Windows.Forms.MessageBox.Show(sd + "\n" + s1 + "\n" + s2);
-                    SPort.Write(s1);
-                }
-            catch 
-                { throw; }
-        }
-
         public void SendClearCode() 
         {
-            string send = "";
+            List<byte> arrOut = new List<byte>();
 
-            send += (char)((byte)(TPageEl.ClearCode));
-            send += (char)(0);
-            try 
+            arrOut.Add((byte)(TPageEl.ClearCode));
+            arrOut.Add(0);
+
+            TrySend(arrOut);
+        }
+
+        private void TrySend(List<byte> byteArr) 
+        {
+            if (ReadyToSend)
             {
-                SPort.Write(send);
+                try
+                {
+                    SPort.Write(byteArr.ToArray(), 0, byteArr.Count);
+                    ReadyToSend = false;
+
+                    timer.Start();
+                }
+                catch
+                {
+                    throw;
+                }
             }
-            catch
-            { throw; }
+        }
+
+        private void TimerElapsed(object sender, EventArgs e) 
+        {
+            ReadyToSend = true;
+            timer.Stop();
         }
     }
 }
