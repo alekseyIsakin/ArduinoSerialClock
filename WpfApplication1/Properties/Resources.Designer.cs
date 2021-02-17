@@ -61,32 +61,6 @@ namespace ArdClock.Properties {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на &lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot; ?&gt;
-        ///&lt;nodes&gt;
-        ///  &lt;node title=&quot;Европа&quot;&gt;
-        ///    &lt;node title=&quot;Германия&quot; /&gt;
-        ///    &lt;node title=&quot;Франция&quot; /&gt;
-        ///    &lt;node title=&quot;Великобритания&quot;&gt;
-        ///      &lt;node title=&quot;Англия&quot; /&gt;
-        ///      &lt;node title=&quot;Шотландия&quot; /&gt;
-        ///      &lt;node title=&quot;Уэльс&quot; /&gt;
-        ///      &lt;node title=&quot;Сев. Ирландия&quot; /&gt;
-        ///    &lt;/node&gt;
-        ///  &lt;/node&gt;
-        ///  &lt;node title=&quot;Азия&quot;&gt;
-        ///    &lt;node title=&quot;Китай&quot; /&gt;
-        ///    &lt;node title=&quot;Япония&quot; /&gt;
-        ///    &lt;node title=&quot;Индия&quot; /&gt;
-        ///  &lt;/node&gt;
-        ///&lt;/nodes&gt;.
-        /// </summary>
-        public static string ListPages {
-            get {
-                return ResourceManager.GetString("ListPages", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Поиск локализованного ресурса типа System.Drawing.Icon, аналогичного (Значок).
         /// </summary>
         public static System.Drawing.Icon main_icon {

@@ -3,9 +3,21 @@
   <Page Name="FirstPage" ID="0">
     <PageEl TPageEl="66">
       <Position Pos_x="0" Pos_y="0" />
-      <Color Value="0x04FF" />
-      <Size Value="6" />
+      <Color Value="0xFFFF" />
+      <Size Value="5" />
       <Data Flags="011" />
+    </PageEl>
+    <PageEl TPageEl="65">
+      <Position Pos_x="0" Pos_y="50" />
+      <Color Value="0xFFE0" />
+      <Size Value="2" />
+      <Data Value="^-^" />
+    </PageEl>
+    <PageEl TPageEl="65">
+      <Position Pos_x="0" Pos_y="65" />
+      <Color Value="0x04FF" />
+      <Size Value="2" />
+      <Data Value="&gt;_&lt;" />
     </PageEl>
   </Page>
 </Pages>

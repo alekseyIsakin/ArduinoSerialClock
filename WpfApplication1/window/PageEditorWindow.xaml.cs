@@ -28,14 +28,14 @@ namespace ArdClock.window
     /// Логика взаимодействия для Window1.xaml
     /// </summary>
     /// 
-    
+
 
     public partial class PageEditorWindow : Window
     {
-        public List<APage> pageList { get; private set;}
+        public List<APage> pageList { get; private set; }
         private List<UIBaseEl> UIControlList;
         public APage curPage { get; private set; }
-        
+
         public string pathToXML = System.Environment.CurrentDirectory + "\\ListPages.xml";
 
         System.Windows.Threading.DispatcherTimer timerPopup;
@@ -52,7 +52,7 @@ namespace ArdClock.window
 
             UIControlList = new List<UIBaseEl>();
 
-            if (pageList.Count > 0) 
+            if (pageList.Count > 0)
             {
                 list_page_name.ItemsSource = pageList;
             }
@@ -65,21 +65,42 @@ namespace ArdClock.window
             UpdateListPageEl();
         }
 
-        public void UpdateListPageEl(UIBaseEl new_el = null) 
+        public void SoftUpdate()
         {
-            if (list_page_name.SelectedIndex == -1)
-                return;
-
-            List<DockPanel> StackPanelEntryDP = new List<DockPanel>();
-
-            APage editPage = pageList[list_page_name.SelectedIndex];
+            // Загружает информацию из сохранённого списка
+            //
 
             elementsPageStackPanel.Children.Clear();
 
             Label pageNameLabel = new Label();
-            pageNameLabel.Content = editPage.Name;
-
+            pageNameLabel.Content = curPage.Name;
             elementsPageStackPanel.Children.Add(pageNameLabel);
+
+            for (int i = 0; i < UIControlList.Count; i++)
+            {
+                UIBaseEl el = UIControlList[i];
+
+                el.UIDockPanel.Background =
+                    (i % 2 == 0) ? Brushes.WhiteSmoke : Brushes.LightGray;
+
+                elementsPageStackPanel.Children.Add(UIControlList[i].UIDockPanel);
+                elementsPageStackPanel.Children.Add(
+                    UIGenerateHelping.NewSeparator(1, Brushes.Black));
+
+            }
+        }
+
+        public void UpdateListPageEl(UIBaseEl new_el = null)
+        {
+            // Загружает информацию напрямую из сохранённой страницы
+            //
+
+            if (list_page_name.SelectedIndex == -1)
+                return;
+
+            APage editPage = pageList[list_page_name.SelectedIndex];
+
+            elementsPageStackPanel.Children.Clear();
 
             if (new_el != null)
                 editPage.Elements.Add(new_el.CompileElement());
@@ -93,30 +114,22 @@ namespace ArdClock.window
                 {
                     case TPageEl.String:
                         UIel = new UIPageString((PageString)el);
-                        StackPanelEntryDP.Add((UIel).UIDockPanel);
                         break;
                     case TPageEl.Time:
                         UIel = new UIPageTime((PageTime)el);
-                        StackPanelEntryDP.Add(UIel.UIDockPanel);
                         break;
                 }
 
                 if (UIel != null)
+                {
+                    UIel.DelClick += buttonDel_Click;
                     UIControlList.Add(UIel);
-                   
+                }
             }
 
-            for (int i = 0; i < StackPanelEntryDP.Count; i++)
-            {
-                StackPanelEntryDP[i].Background =
-                    (i % 2 == 0) ? Brushes.WhiteSmoke : Brushes.LightGray;
-
-                elementsPageStackPanel.Children.Add(StackPanelEntryDP[i]);
-                elementsPageStackPanel.Children.Add(
-                    UIGenerateHelping.NewSeparator(1, Brushes.Black));
-
-            }
             curPage = editPage;
+
+            SoftUpdate();
         }
 
         //
@@ -127,7 +140,7 @@ namespace ArdClock.window
         {
             List<PageEl> new_elements = new List<PageEl>();
 
-            foreach (var UIel in UIControlList) 
+            foreach (var UIel in UIControlList)
             {
                 new_elements.Add(UIel.CompileElement());
             }
@@ -148,10 +161,15 @@ namespace ArdClock.window
             else { ShowPopup("Ничего не сохранено :("); }
         }
 
+        private void buttonDel_Click(object sender, EventArgs e)
+        {
+            UIControlList.Remove((UIBaseEl)sender);
+            SoftUpdate();
+        }
         //
         // Popup logic
         //
-        public void ShowPopup(String text, double sec=1) 
+        public void ShowPopup(String text, double sec = 1)
         {
             popupTextBox.Opacity = 0.8;
             popupTextBox.Text = text;
@@ -162,12 +180,12 @@ namespace ArdClock.window
             timerPopup.Start();
         }
 
-        private void ClosePopup(object sender, EventArgs e) 
+        private void ClosePopup(object sender, EventArgs e)
         {
             timerPopup.Interval = TimeSpan.FromMilliseconds(50);
             popupTextBox.Opacity *= 0.8;
 
-            if (popupTextBox.Opacity <= 0.2) 
+            if (popupTextBox.Opacity <= 0.2)
             {
                 popup1.IsOpen = false;
                 popupTextBox.Opacity = 0.8;
@@ -197,9 +215,9 @@ namespace ArdClock.window
         {
             List<MenuItem> lm = new List<MenuItem>();
 
-            foreach (TPageEl el in Enum.GetValues(typeof(TPageEl))) 
+            foreach (TPageEl el in Enum.GetValues(typeof(TPageEl)))
             {
-                if ((int)el > 64 && (int)el < 127) 
+                if ((int)el > 64 && (int)el < 127)
                 {
                     MenuItem mi = new MenuItem();
 
@@ -213,18 +231,19 @@ namespace ArdClock.window
             ((MenuItem)sender).ItemsSource = lm;
         }
 
-        public void MenuItemAddPageEl_Click(object sender, RoutedEventArgs e) 
+        public void MenuItemAddPageEl_Click(object sender, RoutedEventArgs e)
         {
             string nm = ((MenuItem)sender).Header.ToString();
 
             foreach (TPageEl el in Enum.GetValues(typeof(TPageEl)))
             {
-                if (nm == el.ToString()) 
+                if (nm == el.ToString())
                 {
                     switch (el)
                     {
                         case TPageEl.String:
-                            UpdateListPageEl(new UIPageString(new PageString()));
+                            UIControlList.Add(new UIPageString(new PageString()));
+                            SoftUpdate();
                             break;
 
                         case TPageEl.Time:
@@ -235,5 +254,10 @@ namespace ArdClock.window
                 }
             }
         }
+        //
+        //
+        //
+
+
     }
 }
