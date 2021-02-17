@@ -14,12 +14,8 @@ namespace ArdClock.src.UIGenerate
 {
     class UIPageString : UIBaseEl
     {
-        public UIPageString(PageString ps) 
+        public UIPageString(PageString ps) : base(60)
         {
-            UIDockPanel = new DockPanel();
-            UIDockPanel.Height = 60;
-            UIDockPanel.LastChildFill = false;
-
             // Интерфейс для настройки позиции
             Label lbl_pos = new Label();
             TextBox tbX = new TextBox();
@@ -90,42 +86,46 @@ namespace ArdClock.src.UIGenerate
 
 
             UIDockPanel.Children.Add(tbT);
-            tbT.Uid = "tbT";
 
             UIDockPanel.Children.Add(lbl_pos);
             UIDockPanel.Children.Add(tbX);
             UIDockPanel.Children.Add(
-                UIGenerateHelping.NewGridSplitter(10, Brushes.White));
+                UIGenerateHelping.NewGridSplitter(10, UIDockPanel.Background));
             UIDockPanel.Children.Add(tbY);
 
-            tbX.Uid = "tbX";
-            tbY.Uid = "tbY";
-
             UIDockPanel.Children.Add(
-                UIGenerateHelping.NewGridSplitter(10, Brushes.White));
+                UIGenerateHelping.NewGridSplitter(10, UIDockPanel.Background));
 
             UIDockPanel.Children.Add(lbl_clr);
             UIDockPanel.Children.Add(tbC);
             UIDockPanel.Children.Add(rectC);
 
-            tbC.Uid = "tbC";
 
             UIDockPanel.Children.Add(
-                UIGenerateHelping.NewGridSplitter(10, Brushes.White));
+                UIGenerateHelping.NewGridSplitter(10, UIDockPanel.Background));
 
             UIDockPanel.Children.Add(lbl_size);
             UIDockPanel.Children.Add(tbS);
 
+            UIDockPanel.Children.Add(
+                UIGenerateHelping.NewGridSplitter(10, UIDockPanel.Background));
+
+            AddDelButton();
+
+            tbC.Uid = "tbC";
+            tbX.Uid = "tbX";
+            tbY.Uid = "tbY";
             tbS.Uid = "tbS";
+            tbT.Uid = "tbT";
         }
 
         public override PageEl CompileElement()
         {
             string dt = "";
-            string clr = "";
-            byte px = 0;
-            byte py = 0;
-            byte sz = 0;
+            HelpingClass.AColor clr = null;
+            int px = 0;
+            int py = 0;
+            int sz = 0;
 
             foreach (UIElement ch in UIDockPanel.Children) 
             {
@@ -134,13 +134,43 @@ namespace ArdClock.src.UIGenerate
                     case "tbT":
                         dt = ((TextBox)ch).Text;
                         break;
+
+                    case "tbS":
+                        if (int.TryParse(((TextBox)ch).Text, out sz))
+                            sz = (sz & byte.MaxValue);
+                        else
+                            sz = 0;
+                        break;
+
+                    case "tbY":
+                        if (int.TryParse(((TextBox)ch).Text, out py))
+                            py = (py & byte.MaxValue);
+                        else
+                            py = 0;
+                        break;
+                    case "tbX":
+                        if (int.TryParse(((TextBox)ch).Text, out px))
+                            px = (px & byte.MaxValue);
+                        else
+                            px = 0;
+                        break;
+                    case "tbC":
+                        try
+                        {
+                            clr = new HelpingClass.AColor(((TextBox)ch).Text);
+                        }
+                        catch 
+                        {
+                            clr = HelpingClass.AColors.WHITE;
+                        }
+                        break;
                 }
             }
 
             PageString p_out = new PageString(
-                0,0, 
-                HelpingClass.AColors.CYAN, 
-                4,
+                (byte)px, (byte)py, 
+                clr, 
+                (byte)sz,
                 dt);
 
             return p_out;

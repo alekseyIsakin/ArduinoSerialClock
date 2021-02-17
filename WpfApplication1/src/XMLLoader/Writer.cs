@@ -18,6 +18,7 @@ namespace ArdClock.src.XMLLoader
         static public void WritePageListToXML(List<APage> pageList, string fileName)
         {
             XmlDocument xdd = new XmlDocument();
+
             var xmlDeclaration = xdd.CreateXmlDeclaration("1.0", "UTF-8", null);
             var root = xdd.CreateElement(
                 (XMLDefines.XMLTag.Pages).ToString());
@@ -63,7 +64,10 @@ namespace ArdClock.src.XMLLoader
             }
 
             try
-            { xdd.Save(fileName); }
+            { 
+                xdd.Save(fileName);
+                
+            }
             catch
             { }
         }
@@ -195,20 +199,13 @@ namespace ArdClock.src.XMLLoader
                 XMLDefines.XMLTimeTag.Data.ToString());
 
             var attrSec = xdd.CreateAttribute(
-                XMLDefines.XMLTimeAttr.DataSec.ToString());
-            var attrMin = xdd.CreateAttribute(
-                XMLDefines.XMLTimeAttr.DataMin.ToString());
-            var attrHour = xdd.CreateAttribute(
-                XMLDefines.XMLTimeAttr.DataHour.ToString());
+                XMLDefines.XMLTimeAttr.DataTmFlag.ToString());
 
             attrSec.Value = pt.Second ? "1" : "0";
-            attrMin.Value = pt.Minut ? "1" : "0";
-            attrHour.Value = pt.Hour ? "1" : "0";
+            attrSec.Value += pt.Minut ? "1" : "0";
+            attrSec.Value += pt.Hour ? "1" : "0";
 
             ndDt.Attributes.Append(attrSec);
-            ndDt.Attributes.Append(attrMin);
-            ndDt.Attributes.Append(attrHour);
-
 
             //
             ndPageEl.AppendChild(ndPos);

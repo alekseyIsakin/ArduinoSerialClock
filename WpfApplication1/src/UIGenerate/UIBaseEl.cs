@@ -8,10 +8,39 @@ using ArdClock.src.ArdPage.PageElements;
 
 namespace ArdClock.src.UIGenerate
 {
-    abstract class UIBaseEl
+    public class UIBaseEl
     {
         public DockPanel UIDockPanel;
+        public event EventHandler DelClick;
 
-        public abstract PageEl CompileElement();
+        public UIBaseEl(int Height)
+        {
+            UIDockPanel = new DockPanel();
+            UIDockPanel.Height = Height;
+            UIDockPanel.LastChildFill = false; 
+        }        
+
+
+
+        public virtual PageEl CompileElement() {
+            return null; 
+        }
+
+        public void AddDelButton()
+        {
+            Button bt = new Button();
+
+            bt.Content = "Del";
+            bt.Uid = "delBtn";
+            bt.Click += delClick;
+
+            UIDockPanel.Children.Add(bt);
+        }
+
+        private void delClick(object sender, EventArgs e)
+        {
+            if (DelClick != null)
+                DelClick.Invoke(this, e);
+        }
     }
 }

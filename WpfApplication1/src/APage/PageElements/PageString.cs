@@ -24,6 +24,9 @@ namespace ArdClock.src.ArdPage.PageElements
         public override TPageEl GetTypeEl()
         { return TPageEl.String; }
 
+        public PageString() : this(0,0, AColors.WHITE, 5, "string")
+        { }
+
         public PageString(byte x, byte y, AColor clr, byte sz, string str)
             : base(x, y)
         {

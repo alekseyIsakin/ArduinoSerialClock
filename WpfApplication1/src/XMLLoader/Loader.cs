@@ -170,11 +170,7 @@ namespace ArdClock.src.XMLLoader
 
                         case (XMLDefines.XMLTimeTag.Data):
                             dt_str = nd_string_par.Attributes.GetNamedItem(
-                                XMLDefines.XMLTimeAttr.DataSec).Value;
-                            dt_str += nd_string_par.Attributes.GetNamedItem(
-                                XMLDefines.XMLTimeAttr.DataMin).Value;
-                            dt_str += nd_string_par.Attributes.GetNamedItem(
-                                XMLDefines.XMLTimeAttr.DataHour).Value;
+                                XMLDefines.XMLTimeAttr.DataTmFlag).Value;
                             break;
                     }
                 }

@@ -49,9 +49,7 @@ namespace ArdClock.src.XMLLoader
         }
         public class XMLTimeAttr : XMLStringAttr
         {
-            public const string DataSec = "Sec";
-            public const string DataMin = "Minut";
-            public const string DataHour = "Hour";
+            public const string DataTmFlag = "Flags";
         }
 
         public class XMLTimeTag : XMLStringTag

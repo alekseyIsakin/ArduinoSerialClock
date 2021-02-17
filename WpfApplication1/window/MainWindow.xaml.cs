@@ -278,7 +278,17 @@ namespace ArdClock
         private void button1_Click(object sender, RoutedEventArgs e)
         {
             SenderPage = PEWindow.curPage;
-            PEWindow.Close();
+
+            if (SenderPage != null)
+            {
+                PEWindow.ShowPopup("Активирована страница:\n" + SenderPage.Name);
+
+                PEWindow.Close();
+            }
+            else
+            {
+                PEWindow.ShowPopup("Пусто");
+            }
         }
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)

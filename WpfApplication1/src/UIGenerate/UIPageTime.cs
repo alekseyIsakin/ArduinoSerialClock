@@ -13,12 +13,8 @@ namespace ArdClock.src.UIGenerate
 {
     class UIPageTime : UIBaseEl
     {
-        public UIPageTime(PageTime pt) 
+        public UIPageTime(PageTime pt) : base (47)
         {
-            UIDockPanel = new DockPanel();
-            UIDockPanel.Height = 45;
-            UIDockPanel.LastChildFill = false;
-
             // Интерфейс для настройки позиции
             Label lbl_pos = new Label();
             TextBox tbX = new TextBox();
@@ -84,7 +80,9 @@ namespace ArdClock.src.UIGenerate
             tbS.Height = 23;
             //
 
-            // Текст
+            // Флаги
+            StackPanel spFlasgs = new StackPanel();
+
             CheckBox cbSecond = new CheckBox();
             CheckBox cbMinut = new CheckBox();
             CheckBox cbHour = new CheckBox();
@@ -97,42 +95,114 @@ namespace ArdClock.src.UIGenerate
             cbMinut.Content = "мин";
             cbHour.Content = "час";
 
-            DockPanel.SetDock(cbSecond, Dock.Top);
-            DockPanel.SetDock(cbMinut, Dock.Top);
-            DockPanel.SetDock(cbHour, Dock.Top);
+            spFlasgs.Children.Add(cbSecond);
+            spFlasgs.Children.Add(cbMinut);
+            spFlasgs.Children.Add(cbHour);
             //
 
             UIDockPanel.Children.Add(lbl_pos);
             UIDockPanel.Children.Add(tbX);
             UIDockPanel.Children.Add(
-                UIGenerateHelping.NewGridSplitter(10, Brushes.White));
+                UIGenerateHelping.NewGridSplitter(10, UIDockPanel.Background));
             UIDockPanel.Children.Add(tbY);
 
             UIDockPanel.Children.Add(
-                UIGenerateHelping.NewGridSplitter(10, Brushes.White));
+                UIGenerateHelping.NewGridSplitter(10, UIDockPanel.Background));
 
             UIDockPanel.Children.Add(lbl_clr);
             UIDockPanel.Children.Add(tbC);
             UIDockPanel.Children.Add(rectC);
 
             UIDockPanel.Children.Add(
-                UIGenerateHelping.NewGridSplitter(10, Brushes.White));
+                UIGenerateHelping.NewGridSplitter(10, UIDockPanel.Background));
 
             UIDockPanel.Children.Add(lbl_size);
             UIDockPanel.Children.Add(tbS);
 
             UIDockPanel.Children.Add(
-                UIGenerateHelping.NewGridSplitter(10, Brushes.White));
+                UIGenerateHelping.NewGridSplitter(10, UIDockPanel.Background));
 
-            UIDockPanel.Children.Add(cbSecond);
-            UIDockPanel.Children.Add(cbMinut);
-            UIDockPanel.Children.Add(cbHour);
+            UIDockPanel.Children.Add(spFlasgs);
 
+            UIDockPanel.Children.Add(
+                UIGenerateHelping.NewGridSplitter(10, UIDockPanel.Background));
+
+            AddDelButton();
+
+            tbC.Uid = "tbC";
+            tbX.Uid = "tbX";
+            tbY.Uid = "tbY";
+            tbS.Uid = "tbS";
+            spFlasgs.Uid = "spF";
+            cbSecond.Uid = "cbS";
+            cbMinut.Uid = "cbM";
+            cbHour.Uid = "cbH";
         }
         public override PageEl CompileElement() 
         {
-            PageEl p_out = new PageEl();
+            bool sec = false;
+            bool min = false;
+            bool hour = false;
+            HelpingClass.AColor clr = null;
+            int px = 0;
+            int py = 0;
+            int sz = 0;
+            
 
+
+            foreach (UIElement ch in UIDockPanel.Children) 
+            {
+                switch (ch.Uid) 
+                {
+                    case "spF":
+                        StackPanel sp = (StackPanel)ch;
+
+                        sec = (bool)((CheckBox)sp.Children[0]).IsChecked;
+                        min = (bool)((CheckBox)sp.Children[1]).IsChecked;
+                        hour = (bool)((CheckBox)sp.Children[2]).IsChecked;
+                        break;
+
+                    case "tbS":
+                        if (int.TryParse(((TextBox)ch).Text, out sz))
+                            sz = (sz & byte.MaxValue);
+                        else
+                            sz = 0;
+                        break;
+                    case "tbY":
+                        if (int.TryParse(((TextBox)ch).Text, out py))
+                            py = (py & byte.MaxValue);
+                        else
+                            py = 0;
+                        break;
+                    case "tbX":
+                        if (int.TryParse(((TextBox)ch).Text, out px))
+                            px = (px & byte.MaxValue);
+                        else
+                            px = 0;
+                        break;
+                    case "tbC":
+                        try
+                        {
+                            clr = new HelpingClass.AColor(((TextBox)ch).Text);
+                        }
+                        catch 
+                        {
+                            clr = HelpingClass.AColors.WHITE;
+                        }
+                        break;
+
+                }
+            }
+
+            PageTime p_out = new PageTime(
+                (byte)px, (byte)py, 
+                clr, 
+                (byte)sz);
+
+            p_out.Second = sec;
+            p_out.Minut = min;
+            p_out.Hour = hour;
+            
             return p_out;
         }
     }

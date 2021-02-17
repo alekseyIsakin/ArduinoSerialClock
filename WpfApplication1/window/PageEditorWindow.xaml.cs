@@ -28,17 +28,25 @@ namespace ArdClock.window
     /// Логика взаимодействия для Window1.xaml
     /// </summary>
     /// 
+    
+
     public partial class PageEditorWindow : Window
     {
         public List<APage> pageList { get; private set;}
         private List<UIBaseEl> UIControlList;
         public APage curPage { get; private set; }
+        
         public string pathToXML = System.Environment.CurrentDirectory + "\\ListPages.xml";
+
+        System.Windows.Threading.DispatcherTimer timerPopup;
 
         public PageEditorWindow()
         {
             InitializeComponent();
             //Assembly asm = Assembly.LoadFrom("ClassLibrary1.dll");
+
+            timerPopup = new System.Windows.Threading.DispatcherTimer();
+            timerPopup.Tick += ClosePopup;
 
             pageList = Loader.LoadPageListFromXML(pathToXML);
 
@@ -54,43 +62,66 @@ namespace ArdClock.window
         // страницы
         private void listBox1_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            UpdateListPageEl();
+        }
+
+        public void UpdateListPageEl(UIBaseEl new_el = null) 
+        {
+            if (list_page_name.SelectedIndex == -1)
+                return;
+
+            List<DockPanel> StackPanelEntryDP = new List<DockPanel>();
 
             APage editPage = pageList[list_page_name.SelectedIndex];
-            //MessageBox.Show(editPage.Name);
 
-            stackPanel1.Children.Clear();
+            elementsPageStackPanel.Children.Clear();
 
             Label pageNameLabel = new Label();
             pageNameLabel.Content = editPage.Name;
 
-            stackPanel1.Children.Add(pageNameLabel);
+            elementsPageStackPanel.Children.Add(pageNameLabel);
+
+            if (new_el != null)
+                editPage.Elements.Add(new_el.CompileElement());
 
             UIControlList.Clear();
-            foreach (var el in editPage.Elements) 
+
+            foreach (var el in editPage.Elements)
             {
                 UIBaseEl UIel = null;
-                switch (el.GetTypeEl()) 
+                switch (el.GetTypeEl())
                 {
                     case TPageEl.String:
                         UIel = new UIPageString((PageString)el);
-
-                        stackPanel1.Children.Add(new Separator());
-                        stackPanel1.Children.Add((UIel).UIDockPanel);
+                        StackPanelEntryDP.Add((UIel).UIDockPanel);
                         break;
                     case TPageEl.Time:
                         UIel = new UIPageTime((PageTime)el);
-
-                        stackPanel1.Children.Add(new Separator());
-                        stackPanel1.Children.Add(UIel.UIDockPanel);
+                        StackPanelEntryDP.Add(UIel.UIDockPanel);
                         break;
                 }
 
-                if  (UIel != null)
+                if (UIel != null)
                     UIControlList.Add(UIel);
+                   
             }
 
+            for (int i = 0; i < StackPanelEntryDP.Count; i++)
+            {
+                StackPanelEntryDP[i].Background =
+                    (i % 2 == 0) ? Brushes.WhiteSmoke : Brushes.LightGray;
+
+                elementsPageStackPanel.Children.Add(StackPanelEntryDP[i]);
+                elementsPageStackPanel.Children.Add(
+                    UIGenerateHelping.NewSeparator(1, Brushes.Black));
+
+            }
             curPage = editPage;
         }
+
+        //
+        // Events
+        //
 
         private void button_Save_Click(object sender, RoutedEventArgs e)
         {
@@ -109,9 +140,99 @@ namespace ArdClock.window
                     pageList[list_page_name.SelectedIndex] = curPage;
 
                 Writer.WritePageListToXML(pageList, pathToXML);
-                listBox1_SelectionChanged(list_page_name, null);
+                UpdateListPageEl();
 
-                MessageBox.Show("Сохранено");
+                ShowPopup(String.Format(
+                    "Сохранено: {0} эл.", new_elements.Count.ToString()));
+            }
+            else { ShowPopup("Ничего не сохранено :("); }
+        }
+
+        //
+        // Popup logic
+        //
+        public void ShowPopup(String text, double sec=1) 
+        {
+            popupTextBox.Opacity = 0.8;
+            popupTextBox.Text = text;
+
+            popup1.IsOpen = true;
+
+            timerPopup.Interval = TimeSpan.FromSeconds(sec);
+            timerPopup.Start();
+        }
+
+        private void ClosePopup(object sender, EventArgs e) 
+        {
+            timerPopup.Interval = TimeSpan.FromMilliseconds(50);
+            popupTextBox.Opacity *= 0.8;
+
+            if (popupTextBox.Opacity <= 0.2) 
+            {
+                popup1.IsOpen = false;
+                popupTextBox.Opacity = 0.8;
+                timerPopup.Stop();
+            }
+        }
+
+        private void popup1_MouseLeave(object sender, MouseEventArgs e)
+        {
+            timerPopup.Interval = TimeSpan.FromMilliseconds(500);
+            timerPopup.Start();
+        }
+
+        private void popup1_MouseEnter(object sender, MouseEventArgs e)
+        {
+            popupTextBox.Opacity = 0.8;
+            timerPopup.Stop();
+        }
+
+
+        //
+        // Context Menu events
+        //
+
+        // Context Menu: New Element
+        private void MenuItemAdd_MouseEnter(object sender, RoutedEventArgs e)
+        {
+            List<MenuItem> lm = new List<MenuItem>();
+
+            foreach (TPageEl el in Enum.GetValues(typeof(TPageEl))) 
+            {
+                if ((int)el > 64 && (int)el < 127) 
+                {
+                    MenuItem mi = new MenuItem();
+
+                    mi.Header = el.ToString();
+                    mi.Click += MenuItemAddPageEl_Click;
+
+                    lm.Add(mi);
+                }
+            }
+
+            ((MenuItem)sender).ItemsSource = lm;
+        }
+
+        public void MenuItemAddPageEl_Click(object sender, RoutedEventArgs e) 
+        {
+            string nm = ((MenuItem)sender).Header.ToString();
+
+            foreach (TPageEl el in Enum.GetValues(typeof(TPageEl)))
+            {
+                if (nm == el.ToString()) 
+                {
+                    switch (el)
+                    {
+                        case TPageEl.String:
+                            UpdateListPageEl(new UIPageString(new PageString()));
+                            break;
+
+                        case TPageEl.Time:
+                            UpdateListPageEl(new UIPageTime(new PageTime()));
+                            break;
+                    }
+                    break;
+                }
             }
         }
     }
