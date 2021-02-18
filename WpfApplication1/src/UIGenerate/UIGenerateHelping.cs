@@ -19,5 +19,16 @@ namespace ArdClock.src.UIGenerate
 
             return gs;
         }
+        static public Separator NewSeparator(int height, Brush bgColor)
+        {
+            Separator gs = new Separator
+            {
+                Height = height,
+                Background = bgColor,
+                Margin = new System.Windows.Thickness(0)
+            };
+
+            return gs;
+        }
     }
 }

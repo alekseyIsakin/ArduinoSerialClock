@@ -101,17 +101,22 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="src\APage\PageElements\BaseEl.cs" />
-    <Compile Include="src\APage\PageElements\PageString.cs" />
-    <Compile Include="src\APage\PageElements\PageTime.cs" />
-    <Compile Include="src\APage\PageHolder.cs" />
-    <Compile Include="src\APage\APage.cs" />
+    <Compile Include="src\ArdPage\HelpingClass\PageElCenter.cs" />
+    <Compile Include="src\ArdPage\HelpingClass\PageElCenterPartials\PELCenterXMLLoaders.cs" />
+    <Compile Include="src\ArdPage\HelpingClass\PageElCenterPartials\PELCenterXMLWriters.cs" />
+    <Compile Include="src\ArdPage\PageElements\AbstrPageEl.cs" />
+    <Compile Include="src\ArdPage\PageElements\PageClear.cs" />
+    <Compile Include="src\ArdPage\PageElements\PageEl.cs" />
+    <Compile Include="src\ArdPage\PageElements\PageString.cs" />
+    <Compile Include="src\ArdPage\PageElements\PageTime.cs" />
+    <Compile Include="src\ArdPage\APage.cs" />
     <Compile Include="src\UIGenerate\UIAcolorBox.cs" />
-    <Compile Include="src\HelpingClass\AColor.cs" />
-    <Compile Include="src\HelpingClass\AColors.cs" />
-    <Compile Include="src\HelpingClass\HelpingArduino.cs" />
+    <Compile Include="src\ArdPage\HelpingClass\AColor.cs" />
+    <Compile Include="src\ArdPage\HelpingClass\AColors.cs" />
+    <Compile Include="src\ArdPage\HelpingClass\HelpingArduino.cs" />
     <Compile Include="src\NIcon.cs" />
     <Compile Include="src\SerialControl\DataSender.cs" />
+    <Compile Include="src\UIGenerate\UIBaseEl.cs" />
     <Compile Include="src\UIGenerate\UIGenerateHelping.cs" />
     <Compile Include="src\UIGenerate\UIPageString.cs" />
     <Compile Include="src\UIGenerate\UIPageTime.cs" />
@@ -149,6 +154,7 @@
     </Compile>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
+      <SubType>Designer</SubType>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <None Include="app.config" />
@@ -189,11 +195,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="ico\OK_icon.ico" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="data\ListPages.xml">
-      <SubType>Designer</SubType>
-    </Resource>
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

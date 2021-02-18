@@ -6,19 +6,19 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Shapes;
+
 using ArdClock.src.ArdPage;
+using ArdClock.src.ArdPage.HelpingClass;
 using ArdClock.src.ArdPage.PageElements;
 
 namespace ArdClock.src.UIGenerate
 {
-    class UIPageString
+    class UIPageString : UIBaseEl
     {
-        public DockPanel UIDockPanel;
-        public UIPageString(PageString ps) 
+        public UIPageString(AbstrPageEl pEl)
+            : base(60)
         {
-            UIDockPanel = new DockPanel();
-            UIDockPanel.Height = 60;
-            UIDockPanel.LastChildFill = false;
+            PageString ps = (PageString)pEl; 
 
             // Интерфейс для настройки позиции
             Label lbl_pos = new Label();
@@ -94,22 +94,85 @@ namespace ArdClock.src.UIGenerate
             UIDockPanel.Children.Add(lbl_pos);
             UIDockPanel.Children.Add(tbX);
             UIDockPanel.Children.Add(
-                UIGenerateHelping.NewGridSplitter(10, Brushes.White));
+                UIGenerateHelping.NewGridSplitter(10, UIDockPanel.Background));
             UIDockPanel.Children.Add(tbY);
 
             UIDockPanel.Children.Add(
-                UIGenerateHelping.NewGridSplitter(10, Brushes.White));
+                UIGenerateHelping.NewGridSplitter(10, UIDockPanel.Background));
 
             UIDockPanel.Children.Add(lbl_clr);
             UIDockPanel.Children.Add(tbC);
             UIDockPanel.Children.Add(rectC);
 
+
             UIDockPanel.Children.Add(
-                UIGenerateHelping.NewGridSplitter(10, Brushes.White));
+                UIGenerateHelping.NewGridSplitter(10, UIDockPanel.Background));
 
             UIDockPanel.Children.Add(lbl_size);
             UIDockPanel.Children.Add(tbS);
+
+            tbC.Uid = "tbC";
+            tbX.Uid = "tbX";
+            tbY.Uid = "tbY";
+            tbS.Uid = "tbS";
+            tbT.Uid = "tbT";
         }
 
+        public override PageEl CompileElement()
+        {
+            string dt = "";
+            AColor clr = null;
+            int px = 0;
+            int py = 0;
+            int sz = 0;
+
+            foreach (UIElement ch in UIDockPanel.Children) 
+            {
+                switch (ch.Uid) 
+                {
+                    case "tbT":
+                        dt = ((TextBox)ch).Text;
+                        break;
+
+                    case "tbS":
+                        if (int.TryParse(((TextBox)ch).Text, out sz))
+                            sz = (sz & byte.MaxValue);
+                        else
+                            sz = 0;
+                        break;
+
+                    case "tbY":
+                        if (int.TryParse(((TextBox)ch).Text, out py))
+                            py = (py & byte.MaxValue);
+                        else
+                            py = 0;
+                        break;
+                    case "tbX":
+                        if (int.TryParse(((TextBox)ch).Text, out px))
+                            px = (px & byte.MaxValue);
+                        else
+                            px = 0;
+                        break;
+                    case "tbC":
+                        try
+                        {
+                            clr = new AColor(((TextBox)ch).Text);
+                        }
+                        catch 
+                        {
+                            clr = AColors.WHITE;
+                        }
+                        break;
+                }
+            }
+
+            PageString p_out = new PageString(
+                (byte)px, (byte)py, 
+                clr, 
+                (byte)sz,
+                dt);
+
+            return p_out;
+        }
     }
 }

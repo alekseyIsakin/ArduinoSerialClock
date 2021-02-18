@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+
 using ArdClock.src.HelpingClass;
 using ArdClock.src.ArdPage.PageElements;
+using ArdClock.src.UIGenerate;
 
 namespace ArdClock.src.ArdPage
 {
@@ -58,9 +60,7 @@ namespace ArdClock.src.ArdPage
         }
         
         public override string ToString() 
-        {
-            return string.Format("Page {0}", Name);
-        }
+        { return string.Format("Page {0}", Name); }
 
         public List<byte> GenSendData()
         {
@@ -81,13 +81,5 @@ namespace ArdClock.src.ArdPage
             else
                 return new List<byte>();
         }
-    }
-
-    public enum TPageEl
-    {
-        BaseEl,
-        String = 65,
-        Time,
-        ClearCode = 127
     }
 }

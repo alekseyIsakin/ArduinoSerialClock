@@ -2,12 +2,15 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using ArdClock.src.HelpingClass;
+using ArdClock.src.ArdPage.HelpingClass;
 
 namespace ArdClock.src.ArdPage.PageElements
 {
     class PageString : PageEl
     {
+        public override byte GetTypeEl()
+        { return 65; }
+
         enum StrPageEl
         {
             Position = 1,
@@ -21,8 +24,8 @@ namespace ArdClock.src.ArdPage.PageElements
 
         public string Data;
 
-        public override TPageEl GetTypeEl()
-        { return TPageEl.String; }
+        public PageString() : this(0,0, AColors.WHITE, 5, "string")
+        { }
 
         public PageString(byte x, byte y, AColor clr, byte sz, string str)
             : base(x, y)
@@ -41,18 +44,10 @@ namespace ArdClock.src.ArdPage.PageElements
         {
             List<byte> lout = new List<byte>();
 
-            lout.Add((byte)TPageEl.String);
-
-            //lout.Add((byte)StrPageEl.Position);
+            lout.Add(GetTypeEl());
             lout.AddRange(GeSendtPos());
-
-            //lout.Add((byte)StrPageEl.Color);
             lout.AddRange(GetByteColor());
-
-            //lout.Add((byte)StrPageEl.Size);
             lout.Add(Size);
-
-            //lout.Add((byte)StrPageEl.Data);
 
             foreach (Char chr in Data)
             {
