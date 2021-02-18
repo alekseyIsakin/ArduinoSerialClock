@@ -6,7 +6,7 @@ using System.Windows.Media;
 
 using ArdClock.src;
 
-namespace ArdClock.src.HelpingClass
+namespace ArdClock.src.ArdPage.HelpingClass
 {
     public class AColor
     {

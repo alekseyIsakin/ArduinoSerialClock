@@ -13,28 +13,29 @@ namespace ArdClock.src.UIGenerate
         public DockPanel UIDockPanel;
         public event EventHandler DelClick;
 
+        private ContextMenu DPContextMenu;
+
         public UIBaseEl(int Height)
         {
+            DPContextMenu = new ContextMenu();
+            MenuItem mi = new MenuItem();
+
             UIDockPanel = new DockPanel();
             UIDockPanel.Height = Height;
-            UIDockPanel.LastChildFill = false; 
+            UIDockPanel.LastChildFill = false;
+
+            mi.Header = "Del";
+            mi.Click += delClick;
+
+            DPContextMenu.Items.Add(mi);
+
+            UIDockPanel.ContextMenu = DPContextMenu; 
         }        
 
 
 
         public virtual PageEl CompileElement() {
             return null; 
-        }
-
-        public void AddDelButton()
-        {
-            Button bt = new Button();
-
-            bt.Content = "Del";
-            bt.Uid = "delBtn";
-            bt.Click += delClick;
-
-            UIDockPanel.Children.Add(bt);
         }
 
         private void delClick(object sender, EventArgs e)

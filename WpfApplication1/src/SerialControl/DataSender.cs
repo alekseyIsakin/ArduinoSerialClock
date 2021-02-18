@@ -67,12 +67,7 @@ namespace ArdClock.src.SerialControl
         }
         public void SendClearCode() 
         {
-            List<byte> arrOut = new List<byte>();
-
-            arrOut.Add((byte)(TPageEl.ClearCode));
-            arrOut.Add(0);
-
-            TrySend(arrOut);
+            TrySend((new PageClear()).GenSendData());
         }
 
         private void TrySend(List<byte> byteArr) 

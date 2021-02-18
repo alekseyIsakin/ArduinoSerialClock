@@ -2,12 +2,15 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using ArdClock.src.HelpingClass;
+using ArdClock.src.ArdPage.HelpingClass;
 
 namespace ArdClock.src.ArdPage.PageElements
 {
     class PageTime : PageString
     {
+        public override byte GetTypeEl()
+        { return 66; }
+
         public bool Hour = true;
         public bool Minut= true;
         public bool Second= false;
@@ -50,11 +53,6 @@ namespace ArdClock.src.ArdPage.PageElements
             }
 
             return base.GenSendData();
-        }
-
-        public override TPageEl GetTypeEl()
-        {
-            return TPageEl.Time;
         }
     }
 }

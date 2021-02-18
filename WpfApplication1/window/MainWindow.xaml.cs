@@ -97,11 +97,11 @@ namespace ArdClock
             NIcon.ContextMenuConnect += ConnectPortContext_Click;
 
             timer = new System.Windows.Threading.DispatcherTimer();
-            timer.Tick +=TimerElapsed;
+            timer.Tick += TimerElapsed;
 
             DSender = new src.SerialControl.DataSender();
 
-            string[] lstSpd = { "300", "1200", "2400", "4800", "9600", "19200", "38400" }; 
+            string[] lstSpd = { "300", "1200", "2400", "4800", "9600", "19200", "38400" };
             comboBoxSPD.ItemsSource = lstSpd;
             comboBoxSPD.SelectedIndex = 4;
 
@@ -122,11 +122,6 @@ namespace ArdClock
             else
                 SenderPage = new APage();
             PEWindow.Close();
-
-            //List<APage> lp = new List<APage>();
-            //lp.Add(SenderPage);
-
-            //src.XMLLoader.Writer.WritePageListToXML(lp, System.Environment.CurrentDirectory + "\\WriteListPages.xml");
         }
 
         private void ConnectPort_Click(object sender, RoutedEventArgs e)
@@ -258,7 +253,8 @@ namespace ArdClock
             catch (Exception ex)
             {
                 StopTimer();
-
+                DSender.Disconnect();
+                setConnectGuiState(DSender.IsConnect());
                 MessageBox.Show("Ошибка отправки: " + ex.Message);
             }
             

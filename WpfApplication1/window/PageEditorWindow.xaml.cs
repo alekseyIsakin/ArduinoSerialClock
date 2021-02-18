@@ -17,7 +17,7 @@ using System.Reflection;
 
 using ArdClock.src;
 using ArdClock.src.ArdPage;
-using ArdClock.src.HelpingClass;
+using ArdClock.src.ArdPage.HelpingClass;
 using ArdClock.src.UIGenerate;
 using ArdClock.src.ArdPage.PageElements;
 using ArdClock.src.XMLLoader;
@@ -109,27 +109,24 @@ namespace ArdClock.window
 
             foreach (var el in editPage.Elements)
             {
-                UIBaseEl UIel = null;
-                switch (el.GetTypeEl())
-                {
-                    case TPageEl.String:
-                        UIel = new UIPageString((PageString)el);
-                        break;
-                    case TPageEl.Time:
-                        UIel = new UIPageTime((PageTime)el);
-                        break;
-                }
+                UIBaseEl UIel = PageElCenter.TryGenUiControl(el);
 
                 if (UIel != null)
                 {
-                    UIel.DelClick += buttonDel_Click;
-                    UIControlList.Add(UIel);
+                    AppendNewUIel(UIel);
                 }
             }
 
             curPage = editPage;
 
             SoftUpdate();
+        }
+
+        private void AppendNewUIel(UIBaseEl UIel) 
+        {
+
+            UIel.DelClick += UIPageEl_DelClick;
+            UIControlList.Add(UIel);
         }
 
         //
@@ -161,7 +158,7 @@ namespace ArdClock.window
             else { ShowPopup("Ничего не сохранено :("); }
         }
 
-        private void buttonDel_Click(object sender, EventArgs e)
+        private void UIPageEl_DelClick(object sender, EventArgs e)
         {
             UIControlList.Remove((UIBaseEl)sender);
             SoftUpdate();
@@ -215,17 +212,14 @@ namespace ArdClock.window
         {
             List<MenuItem> lm = new List<MenuItem>();
 
-            foreach (TPageEl el in Enum.GetValues(typeof(TPageEl)))
+            foreach (KeyValuePair<int, string> kv in PageElCenter.getDict())
             {
-                if ((int)el > 64 && (int)el < 127)
-                {
-                    MenuItem mi = new MenuItem();
+                MenuItem mi = new MenuItem();
 
-                    mi.Header = el.ToString();
-                    mi.Click += MenuItemAddPageEl_Click;
+                mi.Header = kv.Value;
+                mi.Click += MenuItemAddPageEl_Click;
 
-                    lm.Add(mi);
-                }
+                lm.Add(mi);
             }
 
             ((MenuItem)sender).ItemsSource = lm;
@@ -235,22 +229,17 @@ namespace ArdClock.window
         {
             string nm = ((MenuItem)sender).Header.ToString();
 
-            foreach (TPageEl el in Enum.GetValues(typeof(TPageEl)))
+            foreach (KeyValuePair<int, string> kv in PageElCenter.getDict())
             {
-                if (nm == el.ToString())
+                if (nm == kv.Value)
                 {
-                    switch (el)
+                    UIBaseEl UIel = PageElCenter.TryGenUiControl(kv.Key);
+                    if (UIel != null)
                     {
-                        case TPageEl.String:
-                            UIControlList.Add(new UIPageString(new PageString()));
-                            SoftUpdate();
-                            break;
-
-                        case TPageEl.Time:
-                            UpdateListPageEl(new UIPageTime(new PageTime()));
-                            break;
+                        AppendNewUIel(UIel);
+                        SoftUpdate();
+                        break;
                     }
-                    break;
                 }
             }
         }

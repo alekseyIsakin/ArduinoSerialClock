@@ -8,14 +8,18 @@ using System.Windows.Media;
 using System.Windows.Shapes;
 
 using ArdClock.src.ArdPage;
+using ArdClock.src.ArdPage.HelpingClass;
 using ArdClock.src.ArdPage.PageElements;
 
 namespace ArdClock.src.UIGenerate
 {
     class UIPageString : UIBaseEl
     {
-        public UIPageString(PageString ps) : base(60)
+        public UIPageString(AbstrPageEl pEl)
+            : base(60)
         {
+            PageString ps = (PageString)pEl; 
+
             // Интерфейс для настройки позиции
             Label lbl_pos = new Label();
             TextBox tbX = new TextBox();
@@ -107,11 +111,6 @@ namespace ArdClock.src.UIGenerate
             UIDockPanel.Children.Add(lbl_size);
             UIDockPanel.Children.Add(tbS);
 
-            UIDockPanel.Children.Add(
-                UIGenerateHelping.NewGridSplitter(10, UIDockPanel.Background));
-
-            AddDelButton();
-
             tbC.Uid = "tbC";
             tbX.Uid = "tbX";
             tbY.Uid = "tbY";
@@ -122,7 +121,7 @@ namespace ArdClock.src.UIGenerate
         public override PageEl CompileElement()
         {
             string dt = "";
-            HelpingClass.AColor clr = null;
+            AColor clr = null;
             int px = 0;
             int py = 0;
             int sz = 0;
@@ -157,11 +156,11 @@ namespace ArdClock.src.UIGenerate
                     case "tbC":
                         try
                         {
-                            clr = new HelpingClass.AColor(((TextBox)ch).Text);
+                            clr = new AColor(((TextBox)ch).Text);
                         }
                         catch 
                         {
-                            clr = HelpingClass.AColors.WHITE;
+                            clr = AColors.WHITE;
                         }
                         break;
                 }

@@ -5,8 +5,11 @@ using System.Text;
 
 namespace ArdClock.src.ArdPage.PageElements
 {
-    public class PageEl
+    public class PageEl : AbstrPageEl
     {
+        public override byte GetTypeEl()
+        { return 0; }
+
         public byte X { get; private set; }
         public byte Y { get; private set; }
 
@@ -34,11 +37,9 @@ namespace ArdClock.src.ArdPage.PageElements
             return lout;
         }
 
-        public virtual List<byte> GenSendData()
+        public override List<byte> GenSendData()
         {
             return new List<byte>();
         }
-        public virtual TPageEl GetTypeEl()
-        { return TPageEl.BaseEl; }
     }
 }

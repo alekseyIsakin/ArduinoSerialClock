@@ -101,14 +101,19 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="src\APage\PageElements\BaseEl.cs" />
-    <Compile Include="src\APage\PageElements\PageString.cs" />
-    <Compile Include="src\APage\PageElements\PageTime.cs" />
-    <Compile Include="src\APage\APage.cs" />
+    <Compile Include="src\ArdPage\HelpingClass\PageElCenter.cs" />
+    <Compile Include="src\ArdPage\HelpingClass\PageElCenterPartials\PELCenterXMLLoaders.cs" />
+    <Compile Include="src\ArdPage\HelpingClass\PageElCenterPartials\PELCenterXMLWriters.cs" />
+    <Compile Include="src\ArdPage\PageElements\AbstrPageEl.cs" />
+    <Compile Include="src\ArdPage\PageElements\PageClear.cs" />
+    <Compile Include="src\ArdPage\PageElements\PageEl.cs" />
+    <Compile Include="src\ArdPage\PageElements\PageString.cs" />
+    <Compile Include="src\ArdPage\PageElements\PageTime.cs" />
+    <Compile Include="src\ArdPage\APage.cs" />
     <Compile Include="src\UIGenerate\UIAcolorBox.cs" />
-    <Compile Include="src\APage\HelpingClass\AColor.cs" />
-    <Compile Include="src\APage\HelpingClass\AColors.cs" />
-    <Compile Include="src\APage\HelpingClass\HelpingArduino.cs" />
+    <Compile Include="src\ArdPage\HelpingClass\AColor.cs" />
+    <Compile Include="src\ArdPage\HelpingClass\AColors.cs" />
+    <Compile Include="src\ArdPage\HelpingClass\HelpingArduino.cs" />
     <Compile Include="src\NIcon.cs" />
     <Compile Include="src\SerialControl\DataSender.cs" />
     <Compile Include="src\UIGenerate\UIBaseEl.cs" />
