@@ -11,9 +11,6 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.Xml;
-using System.Collections.ObjectModel;
-using System.Collections.Specialized;
-using System.Reflection;
 
 using ArdClock.src;
 using ArdClock.src.ArdPage;
@@ -33,7 +30,7 @@ namespace ArdClock.window
     public partial class PageEditorWindow : Window
     {
         public List<APage> pageList { get; private set; }
-        private List<UIBaseEl> UIControlList;
+        private List<AbstrUIBase> UIControlList;
         public APage curPage { get; private set; }
 
         public string pathToXML = System.Environment.CurrentDirectory + "\\ListPages.xml";
@@ -43,14 +40,13 @@ namespace ArdClock.window
         public PageEditorWindow()
         {
             InitializeComponent();
-            //Assembly asm = Assembly.LoadFrom("ClassLibrary1.dll");
 
             timerPopup = new System.Windows.Threading.DispatcherTimer();
             timerPopup.Tick += ClosePopup;
 
             pageList = Loader.LoadPageListFromXML(pathToXML);
 
-            UIControlList = new List<UIBaseEl>();
+            UIControlList = new List<AbstrUIBase>();
 
             if (pageList.Count > 0)
             {
@@ -78,12 +74,12 @@ namespace ArdClock.window
 
             for (int i = 0; i < UIControlList.Count; i++)
             {
-                UIBaseEl el = UIControlList[i];
+                AbstrUIBase el = UIControlList[i];
 
-                el.UIDockPanel.Background =
+                el.Container.Background =
                     (i % 2 == 0) ? Brushes.WhiteSmoke : Brushes.LightGray;
 
-                elementsPageStackPanel.Children.Add(UIControlList[i].UIDockPanel);
+                elementsPageStackPanel.Children.Add(UIControlList[i].Container);
                 elementsPageStackPanel.Children.Add(
                     UIGenerateHelping.NewSeparator(1, Brushes.Black));
 
@@ -109,7 +105,7 @@ namespace ArdClock.window
 
             foreach (var el in editPage.Elements)
             {
-                UIBaseEl UIel = PageElCenter.TryGenUiControl(el);
+                AbstrUIBase UIel = PageElCenter.TryGenUiControl(el);
 
                 if (UIel != null)
                 {
@@ -122,7 +118,7 @@ namespace ArdClock.window
             SoftUpdate();
         }
 
-        private void AppendNewUIel(UIBaseEl UIel) 
+        private void AppendNewUIel(AbstrUIBase UIel) 
         {
 
             UIel.DelClick += UIPageEl_DelClick;
@@ -135,7 +131,7 @@ namespace ArdClock.window
 
         private void button_Save_Click(object sender, RoutedEventArgs e)
         {
-            List<PageEl> new_elements = new List<PageEl>();
+            List<AbstrPageEl> new_elements = new List<AbstrPageEl>();
 
             foreach (var UIel in UIControlList)
             {
@@ -160,7 +156,7 @@ namespace ArdClock.window
 
         private void UIPageEl_DelClick(object sender, EventArgs e)
         {
-            UIControlList.Remove((UIBaseEl)sender);
+            UIControlList.Remove((AbstrUIBase)sender);
             SoftUpdate();
         }
         //
@@ -233,7 +229,7 @@ namespace ArdClock.window
             {
                 if (nm == kv.Value)
                 {
-                    UIBaseEl UIel = PageElCenter.TryGenUiControl(kv.Key);
+                    AbstrUIBase UIel = PageElCenter.TryGenUiControl(kv.Key);
                     if (UIel != null)
                     {
                         AppendNewUIel(UIel);

@@ -278,7 +278,6 @@ namespace ArdClock
             if (SenderPage != null)
             {
                 PEWindow.ShowPopup("Активирована страница:\n" + SenderPage.Name);
-
                 PEWindow.Close();
             }
             else

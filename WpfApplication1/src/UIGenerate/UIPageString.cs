@@ -89,27 +89,27 @@ namespace ArdClock.src.UIGenerate
             //
 
 
-            UIDockPanel.Children.Add(tbT);
+            Container.Children.Add(tbT);
 
-            UIDockPanel.Children.Add(lbl_pos);
-            UIDockPanel.Children.Add(tbX);
-            UIDockPanel.Children.Add(
-                UIGenerateHelping.NewGridSplitter(10, UIDockPanel.Background));
-            UIDockPanel.Children.Add(tbY);
+            Container.Children.Add(lbl_pos);
+            Container.Children.Add(tbX);
+            Container.Children.Add(
+                UIGenerateHelping.NewGridSplitter(10, Container.Background));
+            Container.Children.Add(tbY);
 
-            UIDockPanel.Children.Add(
-                UIGenerateHelping.NewGridSplitter(10, UIDockPanel.Background));
+            Container.Children.Add(
+                UIGenerateHelping.NewGridSplitter(10, Container.Background));
 
-            UIDockPanel.Children.Add(lbl_clr);
-            UIDockPanel.Children.Add(tbC);
-            UIDockPanel.Children.Add(rectC);
+            Container.Children.Add(lbl_clr);
+            Container.Children.Add(tbC);
+            Container.Children.Add(rectC);
 
 
-            UIDockPanel.Children.Add(
-                UIGenerateHelping.NewGridSplitter(10, UIDockPanel.Background));
+            Container.Children.Add(
+                UIGenerateHelping.NewGridSplitter(10, Container.Background));
 
-            UIDockPanel.Children.Add(lbl_size);
-            UIDockPanel.Children.Add(tbS);
+            Container.Children.Add(lbl_size);
+            Container.Children.Add(tbS);
 
             tbC.Uid = "tbC";
             tbX.Uid = "tbX";
@@ -126,7 +126,7 @@ namespace ArdClock.src.UIGenerate
             int py = 0;
             int sz = 0;
 
-            foreach (UIElement ch in UIDockPanel.Children) 
+            foreach (UIElement ch in Container.Children) 
             {
                 switch (ch.Uid) 
                 {

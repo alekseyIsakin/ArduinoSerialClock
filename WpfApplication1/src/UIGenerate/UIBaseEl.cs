@@ -8,11 +8,8 @@ using ArdClock.src.ArdPage.PageElements;
 
 namespace ArdClock.src.UIGenerate
 {
-    public class UIBaseEl
+    public class UIBaseEl : AbstrUIBase
     {
-        public DockPanel UIDockPanel;
-        public event EventHandler DelClick;
-
         private ContextMenu DPContextMenu;
 
         public UIBaseEl(int Height)
@@ -20,28 +17,23 @@ namespace ArdClock.src.UIGenerate
             DPContextMenu = new ContextMenu();
             MenuItem mi = new MenuItem();
 
-            UIDockPanel = new DockPanel();
-            UIDockPanel.Height = Height;
-            UIDockPanel.LastChildFill = false;
+            Container = new DockPanel();
+
+            Container.Height = Height;
+            ((DockPanel)Container).LastChildFill = false;
 
             mi.Header = "Del";
             mi.Click += delClick;
 
             DPContextMenu.Items.Add(mi);
 
-            UIDockPanel.ContextMenu = DPContextMenu; 
+            Container.ContextMenu = DPContextMenu; 
         }        
 
 
 
-        public virtual PageEl CompileElement() {
+        public override PageEl CompileElement() {
             return null; 
-        }
-
-        private void delClick(object sender, EventArgs e)
-        {
-            if (DelClick != null)
-                DelClick.Invoke(this, e);
         }
     }
 }

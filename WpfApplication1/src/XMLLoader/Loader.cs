@@ -34,7 +34,7 @@ namespace ArdClock.src.XMLLoader
                     XmlNode ndName = nd_page.Attributes.GetNamedItem(XMLDefines.XMLPageAttr.Name);
                     XmlNode ndID = nd_page.Attributes.GetNamedItem(XMLDefines.XMLPageAttr.ID);
 
-                    List<PageEl> page_elements = new List<PageEl>();
+                    List<AbstrPageEl> page_elements = new List<AbstrPageEl>();
 
                     foreach (XmlNode nd_el in nd_page)
                     {

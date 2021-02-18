@@ -110,6 +110,7 @@
     <Compile Include="src\ArdPage\PageElements\PageString.cs" />
     <Compile Include="src\ArdPage\PageElements\PageTime.cs" />
     <Compile Include="src\ArdPage\APage.cs" />
+    <Compile Include="src\UIGenerate\AbstrUIBase.cs" />
     <Compile Include="src\UIGenerate\UIAcolorBox.cs" />
     <Compile Include="src\ArdPage\HelpingClass\AColor.cs" />
     <Compile Include="src\ArdPage\HelpingClass\AColors.cs" />

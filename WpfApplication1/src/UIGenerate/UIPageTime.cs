@@ -105,29 +105,29 @@ namespace ArdClock.src.UIGenerate
             spFlasgs.Children.Add(cbHour);
             //
 
-            UIDockPanel.Children.Add(lbl_pos);
-            UIDockPanel.Children.Add(tbX);
-            UIDockPanel.Children.Add(
-                UIGenerateHelping.NewGridSplitter(10, UIDockPanel.Background));
-            UIDockPanel.Children.Add(tbY);
+            Container.Children.Add(lbl_pos);
+            Container.Children.Add(tbX);
+            Container.Children.Add(
+                UIGenerateHelping.NewGridSplitter(10, Container.Background));
+            Container.Children.Add(tbY);
 
-            UIDockPanel.Children.Add(
-                UIGenerateHelping.NewGridSplitter(10, UIDockPanel.Background));
+            Container.Children.Add(
+                UIGenerateHelping.NewGridSplitter(10, Container.Background));
 
-            UIDockPanel.Children.Add(lbl_clr);
-            UIDockPanel.Children.Add(tbC);
-            UIDockPanel.Children.Add(rectC);
+            Container.Children.Add(lbl_clr);
+            Container.Children.Add(tbC);
+            Container.Children.Add(rectC);
 
-            UIDockPanel.Children.Add(
-                UIGenerateHelping.NewGridSplitter(10, UIDockPanel.Background));
+            Container.Children.Add(
+                UIGenerateHelping.NewGridSplitter(10, Container.Background));
 
-            UIDockPanel.Children.Add(lbl_size);
-            UIDockPanel.Children.Add(tbS);
+            Container.Children.Add(lbl_size);
+            Container.Children.Add(tbS);
 
-            UIDockPanel.Children.Add(
-                UIGenerateHelping.NewGridSplitter(10, UIDockPanel.Background));
+            Container.Children.Add(
+                UIGenerateHelping.NewGridSplitter(10, Container.Background));
 
-            UIDockPanel.Children.Add(spFlasgs);
+            Container.Children.Add(spFlasgs);
 
             tbC.Uid = "tbC";
             tbX.Uid = "tbX";
@@ -150,7 +150,7 @@ namespace ArdClock.src.UIGenerate
             
 
 
-            foreach (UIElement ch in UIDockPanel.Children) 
+            foreach (UIElement ch in Container.Children) 
             {
                 switch (ch.Uid) 
                 {

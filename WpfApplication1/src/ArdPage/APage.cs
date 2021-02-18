@@ -25,9 +25,9 @@ namespace ArdClock.src.ArdPage
         public string Name { get; private set; }
         public int ID      { get; private set; }
 
-        public List<PageEl> Elements { get; private set; }
+        public List<AbstrPageEl> Elements { get; private set; }
 
-        public APage(string name, int id, List<PageEl> elements) 
+        public APage(string name, int id, List<AbstrPageEl> elements) 
         {
             Name = name;
             ID   = id;
