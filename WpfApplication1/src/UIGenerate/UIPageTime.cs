@@ -11,6 +11,8 @@ using ArdClock.src.ArdPage;
 using ArdClock.src.ArdPage.HelpingClass;
 using ArdClock.src.ArdPage.PageElements;
 
+using BaseLib;
+
 namespace ArdClock.src.UIGenerate
 {
     class UIPageTime : UIBaseEl
@@ -46,30 +48,9 @@ namespace ArdClock.src.UIGenerate
             //
 
             // Цвет
-            Label lbl_clr = new Label();
-            TextBox tbC = new TextBox();
-            Rectangle rectC = new Rectangle();
 
-            string clr = pt.TextColor.ToHex();
-
-            lbl_clr.Content = "Цвет";
-            lbl_clr.VerticalAlignment = VerticalAlignment.Center;
-
-            tbC.Text = clr;
-
-            tbC.Width = 65;
-            tbC.Height = 23;
-            tbC.TextAlignment = TextAlignment.Center;
-            tbC.MaxLength = 6;
-
-            rectC.Fill = new SolidColorBrush(
-                pt.TextColor.GetColor()
-                );
-            rectC.Stroke = Brushes.Black;
-            rectC.StrokeThickness = 3;
-
-            rectC.Width = 23;
-            rectC.Height = 23;
+            UIAcolorBox clrBox = new UIAcolorBox(
+                pt.TextColor.GetColor());
             //
 
             // Размер
@@ -105,31 +86,29 @@ namespace ArdClock.src.UIGenerate
             spFlasgs.Children.Add(cbHour);
             //
 
-            UIDockPanel.Children.Add(lbl_pos);
-            UIDockPanel.Children.Add(tbX);
-            UIDockPanel.Children.Add(
-                UIGenerateHelping.NewGridSplitter(10, UIDockPanel.Background));
-            UIDockPanel.Children.Add(tbY);
+            Container.Children.Add(lbl_pos);
+            Container.Children.Add(tbX);
+            Container.Children.Add(
+                UIGenerateHelping.NewGridSplitter(10, Container.Background));
+            Container.Children.Add(tbY);
 
-            UIDockPanel.Children.Add(
-                UIGenerateHelping.NewGridSplitter(10, UIDockPanel.Background));
+            Container.Children.Add(
+                UIGenerateHelping.NewGridSplitter(10, Container.Background));
 
-            UIDockPanel.Children.Add(lbl_clr);
-            UIDockPanel.Children.Add(tbC);
-            UIDockPanel.Children.Add(rectC);
+            Container.Children.Add(clrBox);
 
-            UIDockPanel.Children.Add(
-                UIGenerateHelping.NewGridSplitter(10, UIDockPanel.Background));
+            Container.Children.Add(
+                UIGenerateHelping.NewGridSplitter(10, Container.Background));
 
-            UIDockPanel.Children.Add(lbl_size);
-            UIDockPanel.Children.Add(tbS);
+            Container.Children.Add(lbl_size);
+            Container.Children.Add(tbS);
 
-            UIDockPanel.Children.Add(
-                UIGenerateHelping.NewGridSplitter(10, UIDockPanel.Background));
+            Container.Children.Add(
+                UIGenerateHelping.NewGridSplitter(10, Container.Background));
 
-            UIDockPanel.Children.Add(spFlasgs);
+            Container.Children.Add(spFlasgs);
 
-            tbC.Uid = "tbC";
+            clrBox.Uid = "clrBox";
             tbX.Uid = "tbX";
             tbY.Uid = "tbY";
             tbS.Uid = "tbS";
@@ -138,19 +117,19 @@ namespace ArdClock.src.UIGenerate
             cbMinut.Uid = "cbM";
             cbHour.Uid = "cbH";
         }
-        public override PageEl CompileElement() 
+        public override AbstrPageEl CompileElement() 
         {
             bool sec = false;
             bool min = false;
             bool hour = false;
-            AColor clr = null;
+            AColor clr = AColors.WHITE;
             int px = 0;
             int py = 0;
             int sz = 0;
             
 
 
-            foreach (UIElement ch in UIDockPanel.Children) 
+            foreach (UIElement ch in Container.Children) 
             {
                 switch (ch.Uid) 
                 {
@@ -180,28 +159,23 @@ namespace ArdClock.src.UIGenerate
                         else
                             px = 0;
                         break;
-                    case "tbC":
+                    case "clrBox":
                         try
-                        {
-                            clr = new AColor(((TextBox)ch).Text);
-                        }
-                        catch 
-                        {
-                            clr = AColors.WHITE;
-                        }
+                        { clr = new AColor(((UIAcolorBox)ch).GeBoxColor()); }
+                        catch
+                        { }
                         break;
-
                 }
             }
 
-            PageTime p_out = new PageTime(
+            AbstrPageEl p_out = new PageTime(
                 (byte)px, (byte)py, 
                 clr, 
                 (byte)sz);
 
-            p_out.Second = sec;
-            p_out.Minut = min;
-            p_out.Hour = hour;
+            ((PageTime)p_out).Second = sec;
+            ((PageTime)p_out).Minut = min;
+            ((PageTime)p_out).Hour = hour;
             
             return p_out;
         }

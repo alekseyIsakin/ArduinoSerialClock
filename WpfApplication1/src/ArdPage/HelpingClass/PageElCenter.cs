@@ -7,6 +7,8 @@ using ArdClock.src.ArdPage;
 using ArdClock.src.UIGenerate;
 using ArdClock.src.ArdPage.PageElements;
 
+using BaseLib;
+
 namespace ArdClock.src.ArdPage.HelpingClass
 {
     public static partial class PageElCenter
@@ -18,8 +20,8 @@ namespace ArdClock.src.ArdPage.HelpingClass
         private static Func<AbstrPageEl, System.Xml.XmlDocument, System.Xml.XmlElement>[] _funcsXmlWriters
             = new Func<AbstrPageEl, System.Xml.XmlDocument, System.Xml.XmlElement>[128];
 
-        public static Func<AbstrPageEl, UIBaseEl>[] _funcsUIConstruct
-            = new Func<AbstrPageEl, UIBaseEl>[128];
+        public static Func<AbstrPageEl, AbstrUIBase>[] _funcsUIConstruct
+            = new Func<AbstrPageEl, AbstrUIBase>[128];
 
         static private List<int> _index = new List<int>();
         static private Dictionary<int, string> _namesPageEl = new Dictionary<int,string>();
@@ -53,14 +55,14 @@ namespace ArdClock.src.ArdPage.HelpingClass
             _funcsUIConstruct[TTime] = (pEl) => new UIPageTime(pEl);
         }
 
-        public static UIBaseEl TryGenUiControl(int id)
+        public static AbstrUIBase TryGenUiControl(int id)
         {
             if (HasID(id))
                 return _funcsUIConstruct[id](
                     _funcsConstruct[id]());
             return null;
         }
-        public static UIBaseEl TryGenUiControl(PageEl pEl) 
+        public static AbstrUIBase TryGenUiControl(AbstrPageEl pEl) 
         {
             int id = pEl.GetTypeEl();
             if (HasID(id))

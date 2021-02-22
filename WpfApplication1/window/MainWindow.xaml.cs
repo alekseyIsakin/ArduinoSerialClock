@@ -100,7 +100,8 @@ namespace ArdClock
             timer.Tick += TimerElapsed;
 
             DSender = new src.SerialControl.DataSender();
-
+            DSender.TimerIsOver += EnableSend;
+            DSender.SuccSend += LockSend;
             string[] lstSpd = { "300", "1200", "2400", "4800", "9600", "19200", "38400" };
             comboBoxSPD.ItemsSource = lstSpd;
             comboBoxSPD.SelectedIndex = 4;
@@ -194,21 +195,7 @@ namespace ArdClock
         {
             comboBoxSPD.IsEnabled    = state;
             comboBoxPort.IsEnabled   = state;
-            textBoxSender.IsEnabled = !state;
             //TimerCheckBox.IsEnabled = !state;
-        }
-
-        // Отправка сообщения через клавишу Enter
-        private void textBox1_KeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.Key == Key.Return && DSender.IsConnect()) 
-            {
-                for (int i = 0; i < textBoxSender.Text.Length; i++) 
-                {
-                    //DSender.Send(textBoxSender.Text[i].ToString());
-                }
-                textBoxSender.Clear();
-            }
         }
 
         // Запуск/Остановка таймера
@@ -243,6 +230,8 @@ namespace ArdClock
             timer.Stop();
         }
 
+        //
+
         private void SendCurPage() 
         {
             try
@@ -267,18 +256,25 @@ namespace ArdClock
         {
             PEWindow = new window.PageEditorWindow();
             PEWindow.WindowStartupLocation = System.Windows.WindowStartupLocation.CenterScreen;
-            PEWindow.button_Activate.Click += button1_Click;
+            PEWindow.button_Activate.Click += ButtonActivate_Click;
             PEWindow.ShowDialog();
         }
 
-        private void button1_Click(object sender, RoutedEventArgs e)
+        private void LockSend(object sender, EventArgs e)
+        { Button_singleSend.IsEnabled = false; }
+
+        private void EnableSend(object sender, EventArgs e)
+        { Button_singleSend.IsEnabled = true; }
+
+        private void ButtonActivate_Click(object sender, RoutedEventArgs e)
         {
+            // Активация активной страницы из настроек
+            //
             SenderPage = PEWindow.curPage;
 
             if (SenderPage != null)
             {
                 PEWindow.ShowPopup("Активирована страница:\n" + SenderPage.Name);
-
                 PEWindow.Close();
             }
             else
@@ -288,14 +284,10 @@ namespace ArdClock
         }
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
-        {
-            NIcon.Dispose();
-        }
+        { NIcon.Dispose(); }
 
         private void Button_sendClear_Click(object sender, RoutedEventArgs e)
-        {
-            DSender.SendClearCode();
-        }
+        { DSender.SendClearCode(); }
 
         private void Button_singleSend_Click_1(object sender, RoutedEventArgs ev)
         {

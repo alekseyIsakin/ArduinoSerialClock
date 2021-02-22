@@ -43,14 +43,26 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="WpfApplication1.exe" size="384000">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="BaseElementsLib.dll" size="5120">
+      <assemblyIdentity name="BaseElementsLib" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
+      <hash>
+        <dsig:Transforms>
+          <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+        </dsig:Transforms>
+        <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+        <dsig:DigestValue>teubFmLR6tHPXDw1pNZVUhs5PWw=</dsig:DigestValue>
+      </hash>
+    </dependentAssembly>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="WpfApplication1.exe" size="385024">
       <assemblyIdentity name="WpfApplication1" version="1.0.0.0" language="neutral" processorArchitecture="x86" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <dsig:DigestValue>2AGthwnbAYJAX3fAK4SOEOfNxaU=</dsig:DigestValue>
+        <dsig:DigestValue>HDz69SB5xBCVYSdpARz6JdSL3wU=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>

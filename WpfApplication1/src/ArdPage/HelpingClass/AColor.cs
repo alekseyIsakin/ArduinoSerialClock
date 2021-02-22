@@ -17,28 +17,53 @@ namespace ArdClock.src.ArdPage.HelpingClass
         // #### ####
         //      ^^^^
         public AColor() 
-        {
-            FromInt(0x0000);
-        }
+        { SetFromInt(0x0000); }
 
         public AColor(UInt16 uint_16)
-        {
-            FromInt(uint_16);
-        }
+        { SetFromInt(uint_16); }
 
         public AColor(string hex)
-        {
-            FromHex(hex);
-        }
-        public void FromInt(int dt)
+        { SetFromHex(hex); }
+
+        public AColor(Color clr)
+        { SetFromColor(clr); }
+
+        public void SetFromInt(int dt)
         {
             block2 = (byte)(dt & byte.MaxValue);
             block1 = (byte)((dt - (dt & byte.MaxValue)) >> 8);
         }
 
-        public void SetFromColor() 
+        public void SetFromHex(string s)
         {
-            // In progress
+            s = s.Replace("0x", ""); // 0xff_ff => ff_ff
+            s = s.Replace("_", "");  //   ff_ff => ffff
+
+            int dt = int.Parse(s, System.Globalization.NumberStyles.HexNumber);
+            SetFromInt(dt);
+        }
+
+        public void SetFromColor(Color clr)
+        {
+            //    block1    block2 
+            // 0b_1111_1111_1111_1111
+            //    rrrr rggg gggb bbbb
+
+            byte d1 = 56;  // 0b_111000 3bit for Green
+            byte d2 = 7;   // 0b_000111 3bit for Green
+
+            byte R, G, B;
+            block1 = 0;
+            block2 = 0;
+
+            R = (byte)(clr.R / 8);
+            G = (byte)(clr.G / 4);
+            B = (byte)(clr.B / 8);
+
+            block1 =  (byte)(R << 3);
+            block1 += (byte)((G & d1) >> 3);
+            block2 =  (byte)((G & d2) << 5);
+            block2 += B;
         }
 
         public Color GetColor() 
@@ -68,14 +93,7 @@ namespace ArdClock.src.ArdPage.HelpingClass
             return Color.FromRgb(R,G,B);
         }
 
-        public void FromHex(string s) 
-        {
-            s = s.Replace("0x", ""); // 0xff_ff => ff_ff
-            s = s.Replace("_", "");  //   ff_ff => ffff
-
-            int dt = int.Parse(s, System.Globalization.NumberStyles.HexNumber);
-            FromInt(dt);
-        }
+        
 
         public string ToHex() 
         {
