@@ -11,6 +11,8 @@ using ArdClock.src.ArdPage.HelpingClass;
 using ArdClock.src.UIGenerate;
 using ArdClock.src.ArdPage.PageElements;
 
+using BaseLib;
+
 namespace ArdClock.src.XMLLoader
 {
     static class Loader

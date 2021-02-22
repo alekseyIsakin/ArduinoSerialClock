@@ -7,6 +7,8 @@ using ArdClock.src.HelpingClass;
 using ArdClock.src.ArdPage.PageElements;
 using ArdClock.src.UIGenerate;
 
+using BaseLib;
+
 namespace ArdClock.src.ArdPage
 {
     /*
@@ -64,6 +66,8 @@ namespace ArdClock.src.ArdPage
 
         public List<byte> GenSendData()
         {
+            bool overflow = false;
+
             List<byte> out_dt = new List<byte>();
 
             if (Elements == null)
@@ -71,15 +75,19 @@ namespace ArdClock.src.ArdPage
                 System.Windows.MessageBox.Show("Пустая страница");
                 return out_dt;
             }
-            foreach (var e in Elements)
-            {
-                out_dt.AddRange(e.GenSendData());
-            }
+            if (out_dt.Count <=64 )
+                foreach (var e in Elements)
+                {
+                    List<Byte> lb_out = e.GenSendData();
+                    if (lb_out.Count + out_dt.Count <= 64)
+                        out_dt.AddRange(lb_out);
+                    else
+                        overflow = true;
+                }
+            if (overflow)
+                System.Windows.MessageBox.Show("Слишком много данных, некоторые элементы могли не передаться на устройство");
 
-            if (TestPage())
-                return out_dt;
-            else
-                return new List<byte>();
+            return out_dt;
         }
     }
 }

@@ -11,6 +11,8 @@ using ArdClock.src.ArdPage;
 using ArdClock.src.ArdPage.HelpingClass;
 using ArdClock.src.ArdPage.PageElements;
 
+using BaseLib;
+
 namespace ArdClock.src.UIGenerate
 {
     class UIPageString : UIBaseEl
@@ -44,29 +46,8 @@ namespace ArdClock.src.UIGenerate
             //
 
             // Цвет
-            Label lbl_clr = new Label();
-            TextBox tbC = new TextBox();
-            Rectangle rectC = new Rectangle();
-
-            string clr = ps.TextColor.ToHex();
-
-            lbl_clr.Content = "Цвет";
-            tbC.Text = clr;
-
-            tbC.Width = 65;
-            tbC.Height = 23;
-            tbC.TextAlignment = TextAlignment.Center;
-            tbC.MaxLength = 6;
-
-            rectC.Fill = new SolidColorBrush(
-                ps.TextColor.GetColor()
-                );
-            rectC.Stroke = Brushes.Black;
-            rectC.StrokeThickness = 3;
-
-            rectC.Width = 23;
-            rectC.Height = 23;
-            //
+            UIAcolorBox clrBox = new UIAcolorBox(
+                ps.TextColor.GetColor());
 
             // Размер
             Label lbl_size = new Label();
@@ -88,7 +69,6 @@ namespace ArdClock.src.UIGenerate
             DockPanel.SetDock(tbT, Dock.Bottom);
             //
 
-
             Container.Children.Add(tbT);
 
             Container.Children.Add(lbl_pos);
@@ -100,10 +80,7 @@ namespace ArdClock.src.UIGenerate
             Container.Children.Add(
                 UIGenerateHelping.NewGridSplitter(10, Container.Background));
 
-            Container.Children.Add(lbl_clr);
-            Container.Children.Add(tbC);
-            Container.Children.Add(rectC);
-
+            Container.Children.Add(clrBox);
 
             Container.Children.Add(
                 UIGenerateHelping.NewGridSplitter(10, Container.Background));
@@ -111,17 +88,18 @@ namespace ArdClock.src.UIGenerate
             Container.Children.Add(lbl_size);
             Container.Children.Add(tbS);
 
-            tbC.Uid = "tbC";
+
+            clrBox.Uid = "clrBox";
             tbX.Uid = "tbX";
             tbY.Uid = "tbY";
             tbS.Uid = "tbS";
             tbT.Uid = "tbT";
         }
 
-        public override PageEl CompileElement()
+        public override AbstrPageEl CompileElement()
         {
             string dt = "";
-            AColor clr = null;
+            AColor clr = AColors.WHITE;
             int px = 0;
             int py = 0;
             int sz = 0;
@@ -147,26 +125,25 @@ namespace ArdClock.src.UIGenerate
                         else
                             py = 0;
                         break;
+
                     case "tbX":
                         if (int.TryParse(((TextBox)ch).Text, out px))
                             px = (px & byte.MaxValue);
                         else
                             px = 0;
                         break;
-                    case "tbC":
+
+                    case "clrBox":
                         try
-                        {
-                            clr = new AColor(((TextBox)ch).Text);
-                        }
+                        { clr = new AColor(((UIAcolorBox)ch).GeBoxColor()); }
                         catch 
-                        {
-                            clr = AColors.WHITE;
-                        }
+                        { }
                         break;
                 }
             }
+            AbstrPageEl p_out;
 
-            PageString p_out = new PageString(
+            p_out = new PageString(
                 (byte)px, (byte)py, 
                 clr, 
                 (byte)sz,

@@ -6,8 +6,8 @@
         Title="Window1" Height="300" Width="737" DataContext="{Binding}">
     <Grid>
         <ListBox HorizontalAlignment="Left" Margin="12,12,0,71" Name="list_page_name" Width="175" SelectionChanged="listBox1_SelectionChanged" />
-        <ScrollViewer VerticalScrollBarVisibility="Auto" Margin="193,0,0,0">
-        <StackPanel Name="elementsPageStackPanel" Orientation="Vertical" >
+        <ScrollViewer VerticalScrollBarVisibility="Auto" Margin="193,0,0,0" BorderBrush="Black" BorderThickness="1">
+        <StackPanel Name="elementsPageStackPanel" Orientation="Vertical" Background="#FFF2F2F2">
             <StackPanel.ContextMenu>
                 <ContextMenu>
                     <MenuItem Header="Добавить" MouseEnter="MenuItemAdd_MouseEnter"/>

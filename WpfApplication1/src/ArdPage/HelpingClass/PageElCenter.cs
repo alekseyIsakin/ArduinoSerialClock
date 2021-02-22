@@ -7,6 +7,8 @@ using ArdClock.src.ArdPage;
 using ArdClock.src.UIGenerate;
 using ArdClock.src.ArdPage.PageElements;
 
+using BaseLib;
+
 namespace ArdClock.src.ArdPage.HelpingClass
 {
     public static partial class PageElCenter

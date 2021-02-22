@@ -9,7 +9,7 @@
     </PageEl>
     <PageEl TPageEl="66">
       <Position Pos_x="8" Pos_y="8" />
-      <Color Value="0x05FF" />
+      <Color Value="0x001F" />
       <Size Value="5" />
       <Data Flags="011" />
     </PageEl>

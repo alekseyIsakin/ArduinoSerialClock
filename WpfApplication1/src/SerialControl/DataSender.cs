@@ -12,6 +12,9 @@ namespace ArdClock.src.SerialControl
 {
     class DataSender
     {
+        public event EventHandler TimerIsOver;
+        public event EventHandler SuccSend;
+
         const int TIME_WAIT = 2; // время на обработку отправки
         
         System.Windows.Threading.DispatcherTimer timer;
@@ -79,6 +82,9 @@ namespace ArdClock.src.SerialControl
                     SPort.Write(byteArr.ToArray(), 0, byteArr.Count);
                     ReadyToSend = false;
 
+                    if (SuccSend != null)
+                        SuccSend(this, null);
+
                     timer.Start();
                 }
                 catch
@@ -91,6 +97,10 @@ namespace ArdClock.src.SerialControl
         private void TimerElapsed(object sender, EventArgs e) 
         {
             ReadyToSend = true;
+
+            if (TimerIsOver != null)
+                TimerIsOver(this, null);
+
             timer.Stop();
         }
     }

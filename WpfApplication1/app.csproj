@@ -73,6 +73,10 @@
     <StartupObject>ArdClock.App</StartupObject>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="BaseElementsLib, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>.\BaseElementsLib.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -104,13 +108,11 @@
     <Compile Include="src\ArdPage\HelpingClass\PageElCenter.cs" />
     <Compile Include="src\ArdPage\HelpingClass\PageElCenterPartials\PELCenterXMLLoaders.cs" />
     <Compile Include="src\ArdPage\HelpingClass\PageElCenterPartials\PELCenterXMLWriters.cs" />
-    <Compile Include="src\ArdPage\PageElements\AbstrPageEl.cs" />
     <Compile Include="src\ArdPage\PageElements\PageClear.cs" />
     <Compile Include="src\ArdPage\PageElements\PageEl.cs" />
     <Compile Include="src\ArdPage\PageElements\PageString.cs" />
     <Compile Include="src\ArdPage\PageElements\PageTime.cs" />
     <Compile Include="src\ArdPage\APage.cs" />
-    <Compile Include="src\UIGenerate\AbstrUIBase.cs" />
     <Compile Include="src\UIGenerate\UIAcolorBox.cs" />
     <Compile Include="src\ArdPage\HelpingClass\AColor.cs" />
     <Compile Include="src\ArdPage\HelpingClass\AColors.cs" />

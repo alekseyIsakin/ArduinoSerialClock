@@ -19,6 +19,8 @@ using ArdClock.src.UIGenerate;
 using ArdClock.src.ArdPage.PageElements;
 using ArdClock.src.XMLLoader;
 
+using BaseLib;
+
 namespace ArdClock.window
 {
     /// <summary>
@@ -40,6 +42,7 @@ namespace ArdClock.window
         public PageEditorWindow()
         {
             InitializeComponent();
+            button_Activate.Click += (s, e) => button_Save_Click(s, e);
 
             timerPopup = new System.Windows.Threading.DispatcherTimer();
             timerPopup.Tick += ClosePopup;
@@ -66,23 +69,25 @@ namespace ArdClock.window
             // Загружает информацию из сохранённого списка
             //
 
-            elementsPageStackPanel.Children.Clear();
-
-            Label pageNameLabel = new Label();
-            pageNameLabel.Content = curPage.Name;
-            elementsPageStackPanel.Children.Add(pageNameLabel);
-
-            for (int i = 0; i < UIControlList.Count; i++)
+            if (curPage != null) 
             {
-                AbstrUIBase el = UIControlList[i];
+                elementsPageStackPanel.Children.Clear();
 
-                el.Container.Background =
-                    (i % 2 == 0) ? Brushes.WhiteSmoke : Brushes.LightGray;
+                Label pageNameLabel = new Label();
+                pageNameLabel.Content = curPage.Name;
+                elementsPageStackPanel.Children.Add(pageNameLabel);
 
-                elementsPageStackPanel.Children.Add(UIControlList[i].Container);
-                elementsPageStackPanel.Children.Add(
+                for (int i = 0; i < UIControlList.Count; i++)
+                {
+                    AbstrUIBase el = UIControlList[i];
+
+                    el.Container.Background =
+                        (i % 2 == 0) ? Brushes.WhiteSmoke : Brushes.LightGray;
+
+                    elementsPageStackPanel.Children.Add(UIControlList[i].Container);
+                    elementsPageStackPanel.Children.Add(
                     UIGenerateHelping.NewSeparator(1, Brushes.Black));
-
+                }
             }
         }
 
@@ -153,6 +158,8 @@ namespace ArdClock.window
             }
             else { ShowPopup("Ничего не сохранено :("); }
         }
+
+
 
         private void UIPageEl_DelClick(object sender, EventArgs e)
         {

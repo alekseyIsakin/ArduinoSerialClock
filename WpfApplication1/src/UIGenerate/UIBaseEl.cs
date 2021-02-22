@@ -6,6 +6,8 @@ using System.Windows.Controls;
 
 using ArdClock.src.ArdPage.PageElements;
 
+using BaseLib;
+
 namespace ArdClock.src.UIGenerate
 {
     public class UIBaseEl : AbstrUIBase
@@ -32,7 +34,7 @@ namespace ArdClock.src.UIGenerate
 
 
 
-        public override PageEl CompileElement() {
+        public override AbstrPageEl CompileElement() {
             return null; 
         }
     }
