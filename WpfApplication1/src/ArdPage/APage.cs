@@ -38,7 +38,7 @@ namespace ArdClock.src.ArdPage
         }
 
         public APage() :
-            this("NoName", -1, null) { }
+            this("NoName", -1, new List<AbstrPageEl>()) { }
 
         public bool TestPage(List<Byte> in_out_dt=null) 
         {

@@ -26,33 +26,39 @@ namespace ArdClock.src.XMLLoader
             xdd.AppendChild(xmlDeclaration);
             xdd.AppendChild(root);
 
-            foreach (var page in pageList) 
+            if (pageList.Count > 0)
             {
-                // Создаём нод для описания страницы
-                var xmlPage = xdd.CreateElement(
-                    (XMLDefines.XMLTag.Page).ToString());
-
-                // Аттрибут для описания имени и ID
-                var attrName =
-                    xdd.CreateAttribute(XMLDefines.XMLPageAttr.Name.ToString());
-                var attrID =
-                    xdd.CreateAttribute(XMLDefines.XMLPageAttr.ID.ToString());
-
-                attrName.Value = page.Name;
-                attrID.Value = page.ID.ToString();
-
-                xmlPage.Attributes.Append(attrName);
-                xmlPage.Attributes.Append(attrID);
-
-                foreach (var pageEl in page.Elements) 
+                foreach (var page in pageList)
                 {
-                    var xmlEl = PageElCenter.TryWriteToXml(pageEl, xdd);
+                    // Создаём нод для описания страницы
+                    var xmlPage = xdd.CreateElement(
+                        (XMLDefines.XMLTag.Page).ToString());
 
-                    if (xmlEl != null)
-                        xmlPage.AppendChild(xmlEl);
+                    // Аттрибут для описания имени и ID
+                    var attrName =
+                        xdd.CreateAttribute(XMLDefines.XMLPageAttr.Name.ToString());
+                    var attrID =
+                        xdd.CreateAttribute(XMLDefines.XMLPageAttr.ID.ToString());
+
+                    attrName.Value = page.Name;
+                    attrID.Value = page.ID.ToString();
+
+                    xmlPage.Attributes.Append(attrName);
+                    xmlPage.Attributes.Append(attrID);
+
+                    if (page.Elements.Count > 0)
+                    {
+                        foreach (var pageEl in page.Elements)
+                        {
+                            var xmlEl = PageElCenter.TryWriteToXml(pageEl, xdd);
+
+                            if (xmlEl != null)
+                                xmlPage.AppendChild(xmlEl);
+                        }
+                    }
+
+                    root.AppendChild(xmlPage);
                 }
-
-                root.AppendChild(xmlPage);
             }
 
             try
